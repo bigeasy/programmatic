@@ -1,0 +1,33 @@
+{
+    "name":         "source",
+    "version":      "0.0.0",
+    "description":  "Transparent JavaScript source generation from within JavaScript.",
+    "author":       "Alan Gutierrez <alan@prettyrobots.com>",
+    "homepage":     "https://bigeasy.github.io/source",
+    "bugs":         "https://github.com/bigeasy/source/issues",
+    "keywords":
+    [
+                    "generation", "meta",  "source", "javascript"
+    ],
+    "contributors":
+    [
+    ],
+    "devDependencies":
+    {
+                    "proof": "0.0.34"
+    },
+    "scripts":
+    {
+                    "test": "proof platform win32 && proof test */*/*.t.* || t/test"
+    },
+    "licenses":
+    [{
+                    "type": "MIT",
+                    "url": "http://github.com/bigeasy/source/raw/master/LICENSE"
+    }],
+    "repository":
+    {
+                    "type": "git",
+                    "url": "http://github.com/bigeasy/source.git"
+    }
+}
