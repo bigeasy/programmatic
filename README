@@ -6,8 +6,6 @@ Transparent JavaScript source generation from within JavaScript.
     Source:         http://github.io/bigeasy/source
     Issues:         http://github.com/bigeasy/source/issues
 
-    Install:        `npm install source_`
-
     License:        MIT
 
 To learn everything you want to know about Source start here:
