@@ -6,13 +6,76 @@
 <link href="http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy">
 <link rel="stylesheet" type="text/css" href="css/syntax.css">
 <link rel="stylesheet" type="text/css" href="css/source.css">
-<body><a href="https://github.com/bigeasy/source/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a><div class="container">
+<body><a href="https://github.com/bigeasy/source/"><img style="position: fixed; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a><div class="container">
 
 <div class="unit welcome">
 <h1>Source</h1>
 </div>
 
 <div class="unit description markdown">
+Source to embeds JavaScript source generation in your JavaScript using
+JavaScript syntax to define the source. No convoluted mutli-line strings or
+external files necessary. Your current editor will happily highlight your
+generated JavaScript correctly.
+
+Source is a MicroJS library, less than 2k minified and gzipped.
+
+The source blocks passed to Source survive minification, and reap the benefits
+of minification. The generated source is inline with tye library that calls it.
+You can ship your generator to the browser, minified to as small as it will go,
+without having to add additional source files.
+
+## Synopsis
+
+A minimal example.
+
+```javascript
+var source = require('source')
+
+var ok = require('assert').ok
+
+var block = source(function () {
+    return $multiple * number
+})
+block.multiple('2')
+
+ok('return 2 * number' == String(block), 'convert to string')
+
+var double = block.compile('number')
+ok(double(2) == 4, 'generated function')
+```
+
+The `source` function generates a block from an example function and returns a
+`Source` object. Any variable name prefixed by a dollar sign &mdash; `$` &mdadh;
+indicates a place holder for more code.
+
+The `Source` object will contain a method for each place holder. You can fill in
+the place holders with string, or you can fill them in with more blocks.
+
+A block replacement example.
+
+```javascript
+var source = require('source')
+
+var ok = require('assert').ok
+
+var block = source(function () {
+    return $math
+})
+block.math(function () { $multiple * number })
+block.multiple(function () { 2 })
+
+ok('return 2 * number' == String(block), 'convert to string')
+
+var double = block.compile('number')
+ok(double(2) == 4, 'generated function')
+```
+
+Notice how when we add a block to a block, the place holders declared in the
+nested block are defined in the parent `Source` object.
+
+I'll have more an better examples of how you use Source as I use it myself to
+generate binary packet parsers for [Packet](http://bigeasy.github.io/packet).
 </div>
 
 </div></body>
