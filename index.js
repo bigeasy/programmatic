@@ -101,10 +101,12 @@ Source.prototype.compile = function () {
 }
 
 Source.prototype.compiler = function () {
-    return function () {
+    var compiler =  function () {
         var parameters = __slice.call(arguments)
         return Function.apply(Function, parameters.concat(indent(this.compile(), true)))
     }.bind(this)
+    compiler.toString = this.compile.bind(this)
+    return compiler
 }
 
 function createSource () {

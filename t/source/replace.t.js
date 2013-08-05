@@ -32,4 +32,5 @@ require('proof')(3, function (equal) {
     method = source()()
     console.log(String(method))
     equal(method(), 1, 'replace with multi-line source')
+
 })
