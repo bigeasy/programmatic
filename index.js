@@ -16,11 +16,15 @@ Source.prototype.push = function (block) {
 }
 
 Source.prototype.pushBlock = function (block) {
-    var source = String(block).split('\n')
-    var parameters = /^function \(([^)]*)\) {$/.exec(source[0])[1].trim()
+    var source = String(block)
+    var parameters = /^function \(([^)]*)\) {/.exec(source)[1].trim()
     parameters = parameters ? parameters.split(/, /) : []
-    source.shift()
-    source.pop()
+    if (/\n/.test(source)) {
+        source = source.split(/\n/).slice(1, -1)
+        source.push('')
+    } else {
+        source = [ /^function \([^)]*\) {(.*)}$/.exec(source)[1].trim() ]
+    }
     var spaces = Number.MAX_VALUE
     source.forEach(function (line) {
         if (/\S/.test(line)) {
@@ -55,11 +59,11 @@ Source.prototype.pushBlock = function (block) {
             default:
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
                     rest = $[2]
-                    source.push((function (name) {
+                    source.unshift('', (function (name) {
                         return function () {
                             return this.named[name].compile()
                         }
-                    })($[1]), '')
+                    })($[1]))
                 } else {
                     source[0] += esc[0]
                     rest = esc.substring(1)
@@ -68,7 +72,7 @@ Source.prototype.pushBlock = function (block) {
             }
         }
     }
-    source = source.map(function (snippet, index) {
+    source = source.reverse().map(function (snippet, index) {
         if (!(index % 2)) {
             return function () { return snippet }
         } else {
@@ -78,10 +82,14 @@ Source.prototype.pushBlock = function (block) {
     this.source.push.apply(this.source, source)
 }
 
-function indent (source) {
-    return source.split(/\n/).map(function (line) {
-        return '    ' + line
-    }).join('\n')
+function indent (source, trim) {
+    source = source.split(/\n/).map(function (line) {
+        return /\S/.test(line) ? '    ' + line : line
+    })
+    if (trim && source[source.length - 1] == '') {
+        source.pop()
+    }
+    return source.join('\n')
 }
 
 Source.prototype.compile = function () {
@@ -95,7 +103,7 @@ Source.prototype.compile = function () {
 Source.prototype.compiler = function () {
     return function () {
         var parameters = __slice.call(arguments)
-        return Function.apply(Function, parameters.concat(indent(this.compile())))
+        return Function.apply(Function, parameters.concat(indent(this.compile(), true)))
     }.bind(this)
 }
 

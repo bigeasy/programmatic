@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('proof')(2, function (equal) {
+require('proof')(3, function (equal) {
     var source = require('../..').createSource()
 
     source(function () {
@@ -14,13 +14,17 @@ require('proof')(2, function (equal) {
 
     equal(method(), 1, 'replace with string')
 
-    source('number', function () {
-        1
-    })
+    source('number', function () { 1 })
     method = source()()
     console.log(String(method))
     equal(method(), 1, 'replace with source')
 
+    source = require('../..').createSource()
+    source(function () {
+        return (
+            $number
+        )
+    })
     source('number', function () {
         2 -
         1
