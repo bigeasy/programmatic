@@ -40,7 +40,7 @@ Source.prototype.pushBlock = function (block) {
         var $ = /^((?:[^,\\'"\/$]|\\.|(["'])(?:[^\\\1]|\\.)*\2)*)([^\u0000]*)/.exec(rest)
         var esc = $[3]
         source[0] += $[1]
-        if (esc.length == 1) {
+        if (esc.length < 2) {
             source[0] += esc
             rest = ''
         } else {
