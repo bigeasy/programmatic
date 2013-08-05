@@ -82,9 +82,9 @@ Source.prototype.pushBlock = function (block) {
     this.source.push.apply(this.source, source)
 }
 
-function indent (source, trim) {
+function indent (source, spaces, trim) {
     source = source.split(/\n/).map(function (line) {
-        return /\S/.test(line) ? '    ' + line : line
+        return /\S/.test(line) ? spaces + line : line
     })
     if (trim && source[source.length - 1] == '') {
         source.pop()
@@ -94,8 +94,19 @@ function indent (source, trim) {
 
 Source.prototype.compile = function () {
     var source = []
-    this.source.forEach(function (snippet) {
-        source.push(snippet.call(this))
+    var previous, current
+    this.source.forEach(function (snippet, index) {
+        current = snippet.call(this)
+        if (index % 2) {
+            var $ = /\n([\t ]+)$/.exec(previous)
+            if ($ && /\n/.test(current)) {
+                var spaces = $[1]
+                current = indent(current, spaces, true)
+                current = current.substring(spaces.length)
+            }
+        }
+        source.push(current)
+        previous = current
     }, this)
     return source.join('')
 }
@@ -103,7 +114,7 @@ Source.prototype.compile = function () {
 Source.prototype.compiler = function () {
     var compiler =  function () {
         var parameters = __slice.call(arguments)
-        return Function.apply(Function, parameters.concat(indent(this.compile(), true)))
+        return Function.apply(Function, parameters.concat(indent(this.compile(), '    ', true)))
     }.bind(this)
     compiler.toString = this.compile.bind(this)
     return compiler
