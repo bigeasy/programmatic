@@ -1,21 +1,17 @@
 var __slice = [].slice
 
 function Source (parent) {
-    this.source = []
-    this.named = {}
+    this.$source = []
+    this.$blocks = {}
+}
 
-    if (parent) {
-       this.named.__proto__ = parent.named
+var Source = {};
+
+Source.push = function (block) {
+    if (typeof block !== 'function') {
+        this.$source.push(function () { return String(block) })
+        return
     }
-}
-
-
-Source.prototype.push = function (block) {
-    if (typeof block == 'function') this.pushBlock(block)
-    else this.source.push(function () { return String(block) })
-}
-
-Source.prototype.pushBlock = function (block) {
     var source = String(block)
     var parameters = /^function \(([^)]*)\) {/.exec(source)[1].trim()
     parameters = parameters ? parameters.split(/, /) : []
@@ -59,9 +55,15 @@ Source.prototype.pushBlock = function (block) {
             default:
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
                     rest = $[2]
+                    this[$[1]] = (function (name) {
+                        return function (block) {
+                            var source = createSource(block)
+                            this.$blocks[name] = source
+                        }
+                    })($[1])
                     source.unshift('', (function (name) {
                         return function () {
-                            return this.named[name].compile()
+                            return String(this.$blocks[name])
                         }
                     })($[1]))
                 } else {
@@ -79,7 +81,7 @@ Source.prototype.pushBlock = function (block) {
             return snippet
         }
     })
-    this.source.push.apply(this.source, source)
+    this.$source.push.apply(this.$source, source)
 }
 
 function indent (source, spaces, trim) {
@@ -92,10 +94,10 @@ function indent (source, spaces, trim) {
     return source.join('\n')
 }
 
-Source.prototype.compile = function () {
+Source.toString = function () {
     var source = []
     var previous, current
-    this.source.forEach(function (snippet, index) {
+    this.$source.forEach(function (snippet, index) {
         current = snippet.call(this)
         if (index % 2) {
             var $ = /\n([\t ]+)$/.exec(previous)
@@ -111,30 +113,26 @@ Source.prototype.compile = function () {
     return source.join('')
 }
 
-Source.prototype.compiler = function () {
-    var compiler =  function () {
-        var parameters = __slice.call(arguments)
-        return Function.apply(Function, parameters.concat(indent(this.compile(), '    ', true)))
-    }.bind(this)
-    compiler.toString = this.compile.bind(this)
-    return compiler
+Source.compile = function () {
+    var parameters = __slice.call(arguments)
+    return Function.apply(Function, parameters.concat(indent(this.toString(), '    ', true)))
 }
 
-function createSource () {
-    var source = new Source
-    return function () {
-        var vargs = __slice.call(arguments)
-        if (vargs.length == 2) {
-            var name = vargs.shift()
-            var block = vargs.shift()
-            source.named[name] = new Source(source)
-            source.named[name].push(block)
-        } else if (vargs.length) {
-            source.push(vargs.shift())
-        } else {
-            return source.compiler()
-        }
+function createSource (block) {
+    var source = function (block) {
+        return source.push(block)
     }
+
+    source.$source = []
+    source.$blocks = {}
+
+    for (var method in Source) {
+        source[method] = Source[method]
+    }
+
+    source.push(block)
+
+    return source
 }
 
-module.exports.createSource = createSource
+module.exports = createSource

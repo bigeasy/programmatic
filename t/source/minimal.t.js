@@ -1,21 +1,19 @@
 #!/usr/bin/env node
 
 require('proof')(3, function (equal) {
-    var source = require('../..').createSource()
+    var source = require('../..')
 
-    source(function () { return 1 })
-    var method = source()()
+    var block = source(function () { return 1 })
+    var method = block.compile()
 
     console.log(String(method))
 
     equal(method(), 1, 'one liner')
-    equal(String(source()), 'return 1', 'toString')
+    equal(String(block), 'return 1', 'toString')
 
-    source = require('../..').createSource()
-    source(function () {
+    method = source(function () {
         return 1
-    })
-    method = source()()
+    }).compile()
 
     console.log(String(method))
 

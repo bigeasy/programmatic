@@ -1,35 +1,34 @@
 #!/usr/bin/env node
 
 require('proof')(3, function (equal) {
-    var source = require('../..').createSource()
+    var source = require('../..')
 
-    source(function () {
+    var block = source(function () {
         return $number
     })
-    source('number', '1')
+    block.number('1')
 
-    var method = source()()
+    var method = block.compile()
 
     console.log(String(method))
 
     equal(method(), 1, 'replace with string')
 
-    source('number', function () { 1 })
-    method = source()()
+    block.number(function () { 1 })
+    method = block.compile()
     console.log(String(method))
     equal(method(), 1, 'replace with source')
 
-    source = require('../..').createSource()
-    source(function () {
+    block = source(function () {
         return (
             $number
         )
     })
-    source('number', function () {
+    block.number(function () {
         2 -
         1
     })
-    method = source()()
+    method = block.compile()
     console.log(String(method))
     equal(method(), 1, 'replace with multi-line source')
 

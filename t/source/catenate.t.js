@@ -3,15 +3,15 @@
 // examples to satisfy the requirements of Packet
 
 require('proof')(1, function (equal) {
-    var source = require('../..').createSource()
+    var source = require('../..')
 
-    source(function () {
+    var block = source(function () {
         var number = 1
     })
-    source(function () {
+    block(function () {
         return number
     })
-    var method = source()()
+    var method = block.compile()
 
     console.log(String(method))
 
