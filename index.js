@@ -43,7 +43,8 @@ Source.push = function (block) {
     var rest = source.join('\n')
     source = [ '' ]
     while (rest) {
-        var $ = /^((?:[^,\\'"\/$]|\\.|(["'])(?:[^\\\1]|\\.)*\2)*)([^\u0000]*)/.exec(rest)
+        // todo: smaller if this is the only regular expression?
+        var $ = /^((?:[^'"\/\\$]|\\.|(["'])(?:[^\\\1]|\\.)*\2)*)([^\u0000]*)/.exec(rest)
         var esc = $[3]
         source[0] += $[1]
         if (esc.length < 2) {
