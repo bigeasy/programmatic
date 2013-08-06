@@ -1,6 +1,6 @@
 // examples to satisfy the requirements of Packet
 
-require('proof')(1, function (equal) {
+require('proof')(1, function () {
     var source = require('../..')
 
     var block = source(function () {
@@ -13,5 +13,5 @@ require('proof')(1, function (equal) {
 
     console.log(String(method))
 
-    equal(method(), 1, 'catenated')
+    this.equal(method(), 1, 'catenated')
 })

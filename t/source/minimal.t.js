@@ -1,4 +1,4 @@
-require('proof')(3, function (equal) {
+require('proof')(3, function () {
     var source = require('../..')
 
     var block = source(function () { return 1 })
@@ -6,8 +6,8 @@ require('proof')(3, function (equal) {
 
     console.log(String(method))
 
-    equal(method(), 1, 'one liner')
-    equal(String(block), 'return 1', 'toString')
+    this.equal(method(), 1, 'one liner')
+    this.equal(String(block), 'return 1', 'toString')
 
     method = source(function () {
         return 1
@@ -15,5 +15,5 @@ require('proof')(3, function (equal) {
 
     console.log(String(method))
 
-    equal(method(), 1, 'trim last line')
+    this.equal(method(), 1, 'trim last line')
 })

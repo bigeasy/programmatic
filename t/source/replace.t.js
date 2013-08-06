@@ -1,4 +1,4 @@
-require('proof')(3, function (equal) {
+require('proof')(3, function () {
     var source = require('../..')
 
     var block = source(function () {
@@ -10,12 +10,12 @@ require('proof')(3, function (equal) {
 
     console.log(String(method))
 
-    equal(method(), 1, 'replace with string')
+    this.equal(method(), 1, 'replace with string')
 
     block.number(function () { 1 })
     method = block.compile()
     console.log(String(method))
-    equal(method(), 1, 'replace with source')
+    this.equal(method(), 1, 'replace with source')
 
     block = source(function () {
         return (
@@ -28,6 +28,6 @@ require('proof')(3, function (equal) {
     })
     method = block.compile()
     console.log(String(method))
-    equal(method(), 1, 'replace with multi-line source')
+    this.equal(method(), 1, 'replace with multi-line source')
 
 })
