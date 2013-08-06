@@ -4,14 +4,14 @@ require('proof')(1, function () {
     var source = require('../..')
 
     var block = source(function () {
-        var number = 1
+        number++
     })
     block(function () {
         return number
     })
-    var method = block.compile()
+    var method = block.compile('number')
 
     console.log(String(method))
 
-    this.equal(method(), 1, 'catenated')
+    this.equal(method(0), 1, 'catenated')
 })

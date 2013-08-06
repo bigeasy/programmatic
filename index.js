@@ -13,13 +13,19 @@ Source.push = function (block) {
         return
     }
     var source = String(block)
-    var parameters = /^function \(([^)]*)\) {/.exec(source)[1].trim()
-    parameters = parameters ? parameters.split(/, /) : []
+    var inline = true
+    var parameters = /^function\s*\(([^)]*)\)\s*{/.exec(source)[1].trim()
+    parameters = parameters ? parameters.split(/\s*,\s*/) : []
     if (/\n/.test(source)) {
         source = source.split(/\n/).slice(1, -1)
         source.push('')
+        inline = false
     } else {
-        source = [ /^function \([^)]*\) {(.*)}$/.exec(source)[1].trim() ]
+        source = [ /^function\s*\([^)]*\)\s*{(.*)}$/.exec(source)[1].trim() ]
+    }
+    // this is only going to happen after minification.
+    if (inline && this.$source.length) {
+        this.$source.push(function () { return '\n' })
     }
     var spaces = Number.MAX_VALUE
     source.forEach(function (line) {
@@ -115,6 +121,7 @@ Source.toString = function () {
 
 Source.compile = function () {
     var parameters = __slice.call(arguments)
+    console.log(parameters.concat(indent(this.toString(), '    ', true)))
     return Function.apply(Function, parameters.concat(indent(this.toString(), '    ', true)))
 }
 

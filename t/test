@@ -11,7 +11,8 @@ t/sizes index.js | sed 's/^/    /'
 
 echo ""
 
-(proof run t/*/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out) || exit 1
+(proof run t/*/*.t.js | tee .proof.out | proof progress) || \
+  (proof errors < .proof.out) || exit 1
 
 if [ "$TRAVIS" = "true" ]; then
   echo "generating coverage"
@@ -25,20 +26,37 @@ fi
 
 if [ "$TRAVIS" = "true" ] || [ "$MINIFY" = "true" ]; then
   echo ""
-  echo "minified"
+  echo "minified tests"
   echo ""
+
+  mkdir -p "minified/t/source"
+
+  cp "index.js" "minified/index.js"
+
+  for file in t/*/*.t.js; do
+    file=`basename $file`
+    uglifyjs < "t/source/$file" > "minified/t/source/$file"
+  done
+
+  (proof run minified/t/*/*.t.js | tee .proof.out | proof progress) || \
+    (proof errors < .proof.out) || exit 1
+
+  echo ""
+  echo "minified source"
+  echo ""
+
   default=$(cat index.js | uglifyjs | gzip -c | wc -c)
   lift=$(cat index.js | uglifyjs --lift-vars | gzip -c | wc -c)
 
-  bak=index-$(date +'%FT%T').js
-  mv index.js $bak
   if [ $default -lt $lift ]; then
-    cat $bak | uglifyjs > index.js
+    cat "index.js" | uglifyjs > "minified/index.js"
   else
-    cat $bak | uglifyjs --lift-vars > index.js
+    cat "index.js" | uglifyjs --lift-vars > "minified/index.js"
   fi
 
-  (proof run t/*/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out) || exit 1
+  (proof run minified/t/*/*.t.js | tee .proof.out | proof progress) || \
+    (proof errors < .proof.out) || exit 1
+
 fi
 
 echo ""
