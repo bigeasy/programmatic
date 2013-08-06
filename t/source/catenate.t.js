@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 // examples to satisfy the requirements of Packet
 
 require('proof')(1, function (equal) {
