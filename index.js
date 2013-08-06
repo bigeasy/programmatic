@@ -1,1 +1,138 @@
-function Source(e){this.$source=[],this.$blocks={}}function indent(e,t,n){return e=e.split(/\n/).map(function(e){return/\S/.test(e)?t+e:e}),n&&e[e.length-1]==""&&e.pop(),e.join("\n")}function createSource(e){var t=function(e){return t.push(e)};t.$source=[],t.$blocks={};for(var n in Source)t[n]=Source[n];return t.push(e),t}var __slice=[].slice,Source={};Source.push=function(e){if(typeof e!="function"){this.$source.push(function(){return String(e)});return}var t=String(e),n=/^function \(([^)]*)\) {/.exec(t)[1].trim();n=n?n.split(/, /):[],/\n/.test(t)?(t=t.split(/\n/).slice(1,-1),t.push("")):t=[/^function \([^)]*\) {(.*)}$/.exec(t)[1].trim()];var r=Number.MAX_VALUE;t.forEach(function(e){/\S/.test(e)&&(r=Math.min(r,e.length-e.replace(/^\s+/,"").length))}),t=t.map(function(e){return/\S/.test(e)?e.substring(r):""});var i=t.join("\n");t=[""];while(i){var s=/^((?:[^,\\'"\/$]|\\.|(["'])(?:[^\\\1]|\\.)*\2)*)([^\u0000]*)/.exec(i),o=s[3];t[0]+=s[1];if(o.length<2)t[0]+=o,i="";else switch(o[2]){case"$":t[0]+=o[0],i=o.substring(2);break;case"(":break;default:(s=/^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(o))?(i=s[2],this[s[1]]=function(e){return function(t){var n=createSource(t);this.$blocks[e]=n}}(s[1]),t.unshift("",function(e){return function(){return String(this.$blocks[e])}}(s[1]))):(t[0]+=o[0],i=o.substring(1))}}t=t.reverse().map(function(e,t){return t%2?e:function(){return e}}),this.$source.push.apply(this.$source,t)},Source.toString=function(){var e=[],t,n;return this.$source.forEach(function(r,i){n=r.call(this);if(i%2){var s=/\n([\t ]+)$/.exec(t);if(s&&/\n/.test(n)){var o=s[1];n=indent(n,o,!0),n=n.substring(o.length)}}e.push(n),t=n},this),e.join("")},Source.compile=function(){var e=__slice.call(arguments);return Function.apply(Function,e.concat(indent(this.toString(),"    ",!0)))},module.exports=createSource;
+var __slice = [].slice
+
+function Source (parent) {
+    this.$source = []
+    this.$blocks = {}
+}
+
+var Source = {};
+
+Source.push = function (block) {
+    if (typeof block !== 'function') {
+        this.$source.push(function () { return String(block) })
+        return
+    }
+    var source = String(block)
+    var parameters = /^function \(([^)]*)\) {/.exec(source)[1].trim()
+    parameters = parameters ? parameters.split(/, /) : []
+    if (/\n/.test(source)) {
+        source = source.split(/\n/).slice(1, -1)
+        source.push('')
+    } else {
+        source = [ /^function \([^)]*\) {(.*)}$/.exec(source)[1].trim() ]
+    }
+    var spaces = Number.MAX_VALUE
+    source.forEach(function (line) {
+        if (/\S/.test(line)) {
+            spaces = Math.min(spaces, line.length - line.replace(/^\s+/, '').length)
+        }
+    })
+    source = source.map(function (line) {
+        if (/\S/.test(line)) {
+            return line.substring(spaces)
+        } else {
+            return ''
+        }
+    })
+    var rest = source.join('\n')
+    source = [ '' ]
+    while (rest) {
+        var $ = /^((?:[^,\\'"\/$]|\\.|(["'])(?:[^\\\1]|\\.)*\2)*)([^\u0000]*)/.exec(rest)
+        var esc = $[3]
+        source[0] += $[1]
+        if (esc.length < 2) {
+            source[0] += esc
+            rest = ''
+        } else {
+            switch (esc[2]) {
+            case '$':
+                source[0] += esc[0]
+                rest = esc.substring(2)
+                break
+            case '(':
+                // honkin' regular expression.
+                break
+            default:
+                if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
+                    rest = $[2]
+                    this[$[1]] = (function (name) {
+                        return function (block) {
+                            var source = createSource(block)
+                            this.$blocks[name] = source
+                        }
+                    })($[1])
+                    source.unshift('', (function (name) {
+                        return function () {
+                            return String(this.$blocks[name])
+                        }
+                    })($[1]))
+                } else {
+                    source[0] += esc[0]
+                    rest = esc.substring(1)
+                }
+                break
+            }
+        }
+    }
+    source = source.reverse().map(function (snippet, index) {
+        if (!(index % 2)) {
+            return function () { return snippet }
+        } else {
+            return snippet
+        }
+    })
+    this.$source.push.apply(this.$source, source)
+}
+
+function indent (source, spaces, trim) {
+    source = source.split(/\n/).map(function (line) {
+        return /\S/.test(line) ? spaces + line : line
+    })
+    if (trim && source[source.length - 1] == '') {
+        source.pop()
+    }
+    return source.join('\n')
+}
+
+Source.toString = function () {
+    var source = []
+    var previous, current
+    this.$source.forEach(function (snippet, index) {
+        current = snippet.call(this)
+        if (index % 2) {
+            var $ = /\n([\t ]+)$/.exec(previous)
+            if ($ && /\n/.test(current)) {
+                var spaces = $[1]
+                current = indent(current, spaces, true)
+                current = current.substring(spaces.length)
+            }
+        }
+        source.push(current)
+        previous = current
+    }, this)
+    return source.join('')
+}
+
+Source.compile = function () {
+    var parameters = __slice.call(arguments)
+    return Function.apply(Function, parameters.concat(indent(this.toString(), '    ', true)))
+}
+
+function createSource (block) {
+    var source = function (block) {
+        return source.push(block)
+    }
+
+    source.$source = []
+    source.$blocks = {}
+
+    for (var method in Source) {
+        source[method] = Source[method]
+    }
+
+    source.push(block)
+
+    return source
+}
+
+module.exports = createSource
