@@ -21,7 +21,7 @@ generated JavaScript correctly.
 Source is a MicroJS library, less than 2k minified and gzipped.
 
 The source blocks passed to Source survive minification, and reap the benefits
-of minification. The generated source is inline with tye library that calls it.
+of minification. The generated source is inline with the library that calls it.
 You can ship your generator to the browser, minified to as small as it will go,
 without having to add additional source files.
 
@@ -45,9 +45,11 @@ var double = block.compile('number')
 ok(double(2) == 4, 'generated function')
 ```
 
+## Place Holders
+
 The `source` function generates a block from an example function and returns a
-`Source` object. Any variable name prefixed by a dollar sign &mdash; `$` &mdadh;
-indicates a place holder for more code.
+`Source` function object. Any variable name prefixed by a dollar sign &mdash;
+`$` &mdash; indicates a place holder for more code.
 
 The `Source` object will contain a method for each place holder. You can fill in
 the place holders with string, or you can fill them in with more blocks.
@@ -74,8 +76,35 @@ ok(double(2) == 4, 'generated function')
 Notice how when we add a block to a block, the place holders declared in the
 nested block are defined in the parent `Source` object.
 
-I'll have more an better examples of how you use Source as I use it myself to
-generate binary packet parsers for [Packet](http://bigeasy.github.io/packet).
+## Catenation
+
+The `Source` object created by `source` is actually a function. When you call
+that function you append source to the block defined by source.
+
+```javascript
+var source = require('source')
+
+var ok = require('assert').ok
+
+var block = source(function () {
+  number *= $multiple
+})
+
+block(function () {
+  return number
+})
+
+block.multiple(function () { 2 })
+
+ok('number *= 2\n\
+return number' == String(block), 'convert to string')
+
+var double = block.compile('number')
+ok(double(2) == 4, 'generated function')
+```
+
+I'll have more examples of how you use Source as I use it myself to generate
+binary packet parsers for [Packet](http://bigeasy.github.io/packet).
 </div>
 
 </div></body>

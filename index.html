@@ -18,7 +18,7 @@ external files necessary. Your current editor will happily highlight your
 generated JavaScript correctly.</p>
 <p>Source is a MicroJS library, less than 2k minified and gzipped.</p>
 <p>The source blocks passed to Source survive minification, and reap the benefits
-of minification. The generated source is inline with tye library that calls it.
+of minification. The generated source is inline with the library that calls it.
 You can ship your generator to the browser, minified to as small as it will go,
 without having to add additional source files.</p>
 <h2>Synopsis</h2>
@@ -38,9 +38,10 @@ without having to add additional source files.</p>
 <span class="nx">ok</span><span class="p">(</span><span class="kr">double</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;generated function&#39;</span><span class="p">)</span>
 </pre></div>
 </code></pre>
+<h2>Place Holders</h2>
 <p>The <code>source</code> function generates a block from an example function and returns a
-<code>Source</code> object. Any variable name prefixed by a dollar sign — <code>$</code> &mdadh;
-indicates a place holder for more code.</p>
+<code>Source</code> function object. Any variable name prefixed by a dollar sign —
+<code>$</code> — indicates a place holder for more code.</p>
 <p>The <code>Source</code> object will contain a method for each place holder. You can fill in
 the place holders with string, or you can fill them in with more blocks.</p>
 <p>A block replacement example.</p>
@@ -62,8 +63,32 @@ the place holders with string, or you can fill them in with more blocks.</p>
 </code></pre>
 <p>Notice how when we add a block to a block, the place holders declared in the
 nested block are defined in the parent <code>Source</code> object.</p>
-<p>I&#39;ll have more an better examples of how you use Source as I use it myself to
-generate binary packet parsers for <a href="http://bigeasy.github.io/packet">Packet</a>.</p>
+<h2>Catenation</h2>
+<p>The <code>Source</code> object created by <code>source</code> is actually a function. When you call
+that function you append source to the block defined by source.</p>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">ok</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">).</span><span class="nx">ok</span>
+
+<span class="kd">var</span> <span class="nx">block</span> <span class="o">=</span> <span class="nx">source</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">number</span> <span class="o">*=</span> <span class="nx">$multiple</span>
+<span class="p">})</span>
+
+<span class="nx">block</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">number</span>
+<span class="p">})</span>
+
+<span class="nx">block</span><span class="p">.</span><span class="nx">multiple</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="mi">2</span> <span class="p">})</span>
+
+<span class="nx">ok</span><span class="p">(</span><span class="s1">&#39;number *= 2\n\</span>
+<span class="s1">return number&#39;</span> <span class="o">==</span> <span class="nb">String</span><span class="p">(</span><span class="nx">block</span><span class="p">),</span> <span class="s1">&#39;convert to string&#39;</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="kr">double</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="s1">&#39;number&#39;</span><span class="p">)</span>
+<span class="nx">ok</span><span class="p">(</span><span class="kr">double</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;generated function&#39;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<p>I&#39;ll have more examples of how you use Source as I use it myself to generate
+binary packet parsers for <a href="http://bigeasy.github.io/packet">Packet</a>.</p>
 </div>
 
 </div></body>
