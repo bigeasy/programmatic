@@ -148,6 +148,13 @@ Source.toString = function () {
     return source.join('')
 }
 
+Source.define = function () {
+    var parameters = __slice.call(arguments)
+    return 'function (' + parameters.join(', ') + ') {\n' +
+      indent(this.toString(), '    ', true) + '\n' +
+   '}'
+}
+
 Source.compile = function () {
     var parameters = __slice.call(arguments)
     return Function.apply(Function, parameters.concat(indent(this.toString(), '    ', true)))
