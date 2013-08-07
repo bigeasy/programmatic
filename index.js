@@ -5,23 +5,21 @@ var Source = {}
 Source.push = function (block) {
     var source = String(block)
     var declarations
-    var parameters
     var inline = true
 
-    if (typeof block !== 'function') {
-        this.source.push(function () { return String(block) })
-        return
+    if (typeof block == 'function') {
+      if (/\n/.test(source)) {
+          source = source.split(/\n/).slice(1, -1)
+          source.push('')
+          inline = false
+      } else {
+          source = [ /^function\s*\([^)]*\)\s*{(.*)}$/.exec(source)[1].trim() ]
+      }
+    } else {
+      source = source.split(/\n/)
+      inline = source.length == 1
     }
 
-    parameters = /^function\s*\(([^)]*)\)\s*{/.exec(source)[1].trim()
-    parameters = parameters ? parameters.split(/\s*,\s*/) : []
-    if (/\n/.test(source)) {
-        source = source.split(/\n/).slice(1, -1)
-        source.push('')
-        inline = false
-    } else {
-        source = [ /^function\s*\([^)]*\)\s*{(.*)}$/.exec(source)[1].trim() ]
-    }
     // this is only going to happen after minification.
     if (inline && this.source.length) {
         this.source.push(function () { return '\n' })
@@ -54,20 +52,6 @@ Source.push = function (block) {
             case '$':
                 source[0] += esc[0]
                 rest = esc.substring(2)
-                break
-            case '(':
-                $ = /\$\(([^)]+)\)([^\u0000])/.exec(esc)
-                this['$' + $[1]] = (function (name) {
-                    return function (string) {
-                        this.blocks[name] = string
-                    }
-                })($[1])
-                source.unshift('', (function (name) {
-                    return function () {
-                        return JSON.stringify(this.blocks[name])
-                    }
-                })($[1]))
-                rest = $[2]
                 break
             case '.':
                 rest = esc.replace(/^\$\.var\(/, '')

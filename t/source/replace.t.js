@@ -1,4 +1,4 @@
-require('proof')(3, function () {
+require('proof')(4, function () {
     var source = require('../..')
 
     var block = source(function () {
@@ -30,4 +30,14 @@ require('proof')(3, function () {
     console.log(String(method))
     this.equal(method(), 1, 'replace with multi-line source')
 
+    block = source('\n\
+        return $number  \n\
+    ')
+    block.$number('1')
+
+    method = block.compile()
+
+    console.log(String(method))
+
+    this.equal(method(), 1, 'replace with string')
 })

@@ -1,4 +1,4 @@
-require('proof')(4, function () {
+require('proof')(5, function () {
     var source = require('../..')
 
     var block = source(function () { return 1 })
@@ -17,4 +17,9 @@ require('proof')(4, function () {
     console.log(String(method))
 
     this.equal(method(), 1, 'trim last line')
+
+    block = source('return 1')
+    method = block.compile()
+
+    this.equal(method(), 1, 'one liner string')
 })
