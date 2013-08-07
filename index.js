@@ -1,11 +1,6 @@
 var __slice = [].slice
 
-function Source (parent) {
-    this.$source = []
-    this.$blocks = {}
-}
-
-var Source = {};
+var Source = {}
 
 Source.push = function (block) {
     var source = String(block)
