@@ -51,13 +51,24 @@ Source.push = function (block) {
             source[0] += esc
             rest = ''
         } else {
-            switch (esc[2]) {
+            switch (esc[1]) {
             case '$':
                 source[0] += esc[0]
                 rest = esc.substring(2)
                 break
             case '(':
-                // honkin' regular expression.
+                $ = /\$\(([^)]+)\)([^\u0000])/.exec(esc)
+                this[$[1]] = (function (name) {
+                    return function (string) {
+                        this.$blocks[name] = string
+                    }
+                })($[1])
+                source.unshift('', (function (name) {
+                    return function () {
+                        return JSON.stringify(this.$blocks[name])
+                    }
+                })($[1]))
+                rest = $[2]
                 break
             default:
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
@@ -122,7 +133,6 @@ Source.toString = function () {
 
 Source.compile = function () {
     var parameters = __slice.call(arguments)
-    console.log(parameters.concat(indent(this.toString(), '    ', true)))
     return Function.apply(Function, parameters.concat(indent(this.toString(), '    ', true)))
 }
 
