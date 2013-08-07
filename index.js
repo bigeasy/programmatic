@@ -57,7 +57,7 @@ Source.push = function (block) {
                 break
             case '(':
                 $ = /\$\(([^)]+)\)([^\u0000])/.exec(esc)
-                this[$[1]] = (function (name) {
+                this['$' + $[1]] = (function (name) {
                     return function (string) {
                         this.$blocks[name] = string
                     }
@@ -80,7 +80,6 @@ Source.push = function (block) {
                     else if ($[3] == '(') depth++
                     rest = $[4]
                 }
-                console.log(source)
                 if (source[0].length && !/[;\n]\s+$/.test(source[0])) {
                     rest += '\n'
                 }
@@ -89,7 +88,7 @@ Source.push = function (block) {
             default:
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
                     rest = $[2]
-                    this[$[1]] = (function (name) {
+                    this['$' + $[1]] = (function (name) {
                         return function () {
                             this.$blocks[name] = createSource.apply(null, __slice.call(arguments))
                         }

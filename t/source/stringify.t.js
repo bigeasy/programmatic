@@ -1,8 +1,8 @@
 require('proof')(2, function () {
     var source = require('../..')
 
-    var block = source(function () { return object[$(key)] })
-    block.key('a')
+    var block = source(function () { return object[$(name)] })
+    block.$name('a')
 
     var method = block.compile('object')
 

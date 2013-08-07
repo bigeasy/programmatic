@@ -9,7 +9,7 @@ require('proof')(1, function () {
     block(function () {
         return number * multiple
     })
-    block.multiple(function () { 2 })
+    block.$multiple(function () { 2 })
     var double = block.compile('number')
 
     console.log(String(double))
