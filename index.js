@@ -8,13 +8,17 @@ function Source (parent) {
 var Source = {};
 
 Source.push = function (block) {
+    var source = String(block)
+    var declarations
+    var parameters
+    var inline = true
+
     if (typeof block !== 'function') {
         this.$source.push(function () { return String(block) })
         return
     }
-    var source = String(block)
-    var inline = true
-    var parameters = /^function\s*\(([^)]*)\)\s*{/.exec(source)[1].trim()
+
+    parameters = /^function\s*\(([^)]*)\)\s*{/.exec(source)[1].trim()
     parameters = parameters ? parameters.split(/\s*,\s*/) : []
     if (/\n/.test(source)) {
         source = source.split(/\n/).slice(1, -1)
@@ -69,6 +73,23 @@ Source.push = function (block) {
                     }
                 })($[1]))
                 rest = $[2]
+                break
+            case '.':
+                rest = esc.replace(/^\$\.var\(/, '')
+                var depth = 1
+                $[1] = $[3] = declarations = ''
+                while (depth) {
+                    declarations += $[1] + $[3]
+                    $ = /^((?:[^'"\/\\)(]|\\.|(["'])(?:[^\\\1]|\\.)*\2)*)([)(])([^\u0000]*)/.exec(rest)
+                    if ($[3] == ')') depth--
+                    else if ($[3] == '(') depth++
+                    rest = $[4]
+                }
+                console.log(source)
+                if (source[0].length && !/[;\n]\s+$/.test(source[0])) {
+                    rest += '\n'
+                }
+                rest = 'var ' + declarations + $[1] + rest
                 break
             default:
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
