@@ -9,7 +9,7 @@ Source.push = function (block) {
     var inline = true
 
     if (typeof block !== 'function') {
-        this.$source.push(function () { return String(block) })
+        this.source.push(function () { return String(block) })
         return
     }
 
@@ -23,8 +23,8 @@ Source.push = function (block) {
         source = [ /^function\s*\([^)]*\)\s*{(.*)}$/.exec(source)[1].trim() ]
     }
     // this is only going to happen after minification.
-    if (inline && this.$source.length) {
-        this.$source.push(function () { return '\n' })
+    if (inline && this.source.length) {
+        this.source.push(function () { return '\n' })
     }
     var spaces = Number.MAX_VALUE
     source.forEach(function (line) {
@@ -59,12 +59,12 @@ Source.push = function (block) {
                 $ = /\$\(([^)]+)\)([^\u0000])/.exec(esc)
                 this['$' + $[1]] = (function (name) {
                     return function (string) {
-                        this.$blocks[name] = string
+                        this.blocks[name] = string
                     }
                 })($[1])
                 source.unshift('', (function (name) {
                     return function () {
-                        return JSON.stringify(this.$blocks[name])
+                        return JSON.stringify(this.blocks[name])
                     }
                 })($[1]))
                 rest = $[2]
@@ -88,14 +88,17 @@ Source.push = function (block) {
             default:
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
                     rest = $[2]
-                    this['$' + $[1]] = (function (name) {
+                    var f = (function (name) {
                         return function () {
-                            this.$blocks[name] = createSource.apply(null, __slice.call(arguments))
+                            this.blocks[name] = _createSource(this.blocks, this.objects, __slice.call(arguments))
                         }
                     })($[1])
+                    this.objects.forEach(function (object) {
+                        object['$' + $[1]] = f
+                    })
                     source.unshift('', (function (name) {
                         return function () {
-                            return String(this.$blocks[name])
+                            return String(this.blocks[name])
                         }
                     })($[1]))
                 } else {
@@ -113,7 +116,7 @@ Source.push = function (block) {
             return snippet
         }
     })
-    this.$source.push.apply(this.$source, source)
+    this.source.push.apply(this.source, source)
 }
 
 function indent (source, spaces, trim) {
@@ -129,7 +132,7 @@ function indent (source, spaces, trim) {
 Source.toString = function () {
     var source = []
     var previous, current
-    this.$source.forEach(function (snippet, index) {
+    this.source.forEach(function (snippet, index) {
         current = snippet.call(this)
         if (index % 2) {
             var $ = /\n([\t ]+)$/.exec(previous)
@@ -151,20 +154,23 @@ Source.compile = function () {
 }
 
 function createSource () {
+    return _createSource({}, [], __slice.call(arguments))
+}
+
+function _createSource (_blocks, _objects, blocks) {
     var source = function (block) {
         return source.push(block)
     }
 
-    source.$source = []
-    source.$blocks = {}
+    source.source = []
+    source.objects = _objects.concat(source)
+    source.blocks = _blocks
 
     for (var method in Source) {
         source[method] = Source[method]
     }
 
-    __slice.call(arguments).forEach(function (block) {
-        source.push(block)
-    })
+    blocks.forEach(function (block) { source.push(block) })
 
     return source
 }
