@@ -95,9 +95,8 @@ Source.push = function (block) {
                 if ($ = /^\$([_\w][_$\w\d]*)([^\u0000]*)/.exec(esc)) {
                     rest = $[2]
                     this[$[1]] = (function (name) {
-                        return function (block) {
-                            var source = createSource(block)
-                            this.$blocks[name] = source
+                        return function () {
+                            this.$blocks[name] = createSource.apply(null, __slice.call(arguments))
                         }
                     })($[1])
                     source.unshift('', (function (name) {
@@ -157,7 +156,7 @@ Source.compile = function () {
     return Function.apply(Function, parameters.concat(indent(this.toString(), '    ', true)))
 }
 
-function createSource (block) {
+function createSource () {
     var source = function (block) {
         return source.push(block)
     }
@@ -169,7 +168,9 @@ function createSource (block) {
         source[method] = Source[method]
     }
 
-    source.push(block)
+    __slice.call(arguments).forEach(function (block) {
+        source.push(block)
+    })
 
     return source
 }
