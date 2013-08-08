@@ -21,9 +21,10 @@ Source.push = function (block) {
     }
 
     // this is only going to happen after minification.
-    if (inline && this.source.length) {
+    if (this.source.length && (inline || this.nonewline)) {
         this.source.push(function () { return '\n' })
     }
+    this.nonewline = /\S/.test(source[source.length - 1])
     var spaces = Number.MAX_VALUE
     source.forEach(function (line) {
         if (/\S/.test(line)) {
