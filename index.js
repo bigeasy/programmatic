@@ -7,7 +7,7 @@ Source.push = function (block) {
     var declarations
     var inline = true
 
-    if (typeof block == 'function') {
+    if (typeof block == 'function' && block.push !== Source.push) {
       if (/\n/.test(source)) {
           source = source.split(/\n/).slice(1, -1)
           source.push('')
@@ -16,7 +16,7 @@ Source.push = function (block) {
           source = [ /^function\s*\([^)]*\)\s*{(.*)}$/.exec(source)[1].trim() ]
       }
     } else {
-      source = source.split(/\n/)
+      source = String(source).split(/\n/)
       inline = source.length == 1
     }
 

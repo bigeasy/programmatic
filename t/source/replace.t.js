@@ -1,4 +1,4 @@
-require('proof')(4, function () {
+require('proof')(5, function () {
     var source = require('../..')
 
     var block = source(function () {
@@ -40,4 +40,16 @@ require('proof')(4, function () {
     console.log(String(method))
 
     this.equal(method(), 1, 'replace with string')
+
+    block = source('\n\
+        return $number  \n\
+    ')
+    var number = source(function () { 1 })
+    block.$number(number)
+
+    method = block.compile()
+
+    console.log(String(method))
+
+    this.equal(method(), 1, 'replace with source')
 })
