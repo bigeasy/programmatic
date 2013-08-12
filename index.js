@@ -24,6 +24,10 @@ Source.push = function (block) {
     if (this.source.length && (inline || this.nonewline)) {
         this.source.push(function () { return '\n' })
     }
+
+    source = source.map(function (line) {
+        return line.replace(/\s+$/, '')
+    })
     this.nonewline = /\S/.test(source[source.length - 1])
     var spaces = Number.MAX_VALUE
     source.forEach(function (line) {
