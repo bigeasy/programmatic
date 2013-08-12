@@ -108,7 +108,10 @@ function indent (source, spaces, trim) {
     source = source.split(/\n/).map(function (line) {
         return /\S/.test(line) ? spaces + line : line
     })
-    if (trim && source[source.length - 1] == '') {
+    while (trim && source[0] == '') {
+        source.shift()
+    }
+    while (trim && source[source.length - 1] == '') {
         source.pop()
     }
     return source.join('\n')
