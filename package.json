@@ -1,6 +1,6 @@
 {
     "name":         "programmatic",
-    "version":      "9.9.9",
+    "version":      "0.0.0",
     "description":  "Transparent JavaScript source generation from within JavaScript.",
     "author":       "Alan Gutierrez <alan@prettyrobots.com>",
     "homepage":     "https://bigeasy.github.io/programmatic",
