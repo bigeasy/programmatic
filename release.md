@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Upgrade Proof to 0.0.41. #36.
  * Update `LICENSE` for 2014. #35.
  * [31m[error][39m { message: '{"message":"Not Found","documentation_url":"http://developer.github.com/v3"}',[31m[error][39m   code: 404 } null bigeasy #34.
  * Rename project to Programmatic. #34.
