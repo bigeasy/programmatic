@@ -1,10 +1,10 @@
 {
-    "name":         "source",
-    "version":      "0.0.0",
+    "name":         "programmatic",
+    "version":      "9.9.9",
     "description":  "Transparent JavaScript source generation from within JavaScript.",
     "author":       "Alan Gutierrez <alan@prettyrobots.com>",
-    "homepage":     "https://bigeasy.github.io/source",
-    "bugs":         "https://github.com/bigeasy/source/issues",
+    "homepage":     "https://bigeasy.github.io/programmatic",
+    "bugs":         "https://github.com/bigeasy/programmatic/issues",
     "keywords":
     [
                     "generation", "meta",  "source", "javascript"
@@ -24,11 +24,11 @@
     "licenses":
     [{
                     "type": "MIT",
-                    "url": "http://github.com/bigeasy/source/raw/master/LICENSE"
+                    "url": "http://github.com/bigeasy/programmatic/raw/master/LICENSE"
     }],
     "repository":
     {
                     "type": "git",
-                    "url": "http://github.com/bigeasy/source.git"
+                    "url": "http://github.com/bigeasy/programmatic.git"
     }
 }

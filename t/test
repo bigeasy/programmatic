@@ -29,13 +29,13 @@ if [ "$TRAVIS" = "true" ] || [ "$MINIFY" = "true" ]; then
   echo "minified tests"
   echo ""
 
-  mkdir -p "minified/t/source"
+  mkdir -p "minified/t/programmatic"
 
   cp "index.js" "minified/index.js"
 
   for file in t/*/*.t.js; do
     file=`basename $file`
-    uglifyjs < "t/source/$file" > "minified/t/source/$file"
+    uglifyjs < "t/programmatic/$file" > "minified/t/programmatic/$file"
   done
 
   (proof run minified/t/*/*.t.js | tee .proof.out | proof progress) || \

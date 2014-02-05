@@ -1,9 +1,9 @@
 // examples to satisfy the requirements of Packet
 
 require('proof')(3, function () {
-    var source = require('../..')
+    var programmatic = require('../..')
 
-    var block = source(function () {
+    var block = programmatic(function () {
         number++
     })
     block(function () {
@@ -15,7 +15,7 @@ require('proof')(3, function () {
 
     this.equal(method(0), 1, 'catenated')
 
-    var block = source()
+    var block = programmatic()
 
     block(function () {
         number++
@@ -25,7 +25,7 @@ require('proof')(3, function () {
     })
     method = block.compile('number')
     this.equal(method(0), 1, 'catenated')
-    var block = source(function () {
+    var block = programmatic(function () {
         number++
     }, function () {
         return number

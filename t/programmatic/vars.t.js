@@ -1,9 +1,9 @@
 // examples to satisfy the requirements of Packet
 
 require('proof')(1, function () {
-    var source = require('../..')
+    var programmatic = require('../..')
 
-    var block = source(function () {
+    var block = programmatic(function () {
         $.var(multiple = $multiple)
     })
     block(function () {

@@ -1,7 +1,7 @@
 require('proof')(1, function () {
-    var source = require('../..')
+    var programmatic = require('../..')
 
-    var block = source(function () {
+    var block = programmatic(function () {
         return $math
     })
     block.$math(function () { $multiple * number })

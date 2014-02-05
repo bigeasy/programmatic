@@ -1,7 +1,7 @@
 require('proof')(5, function () {
-    var source = require('../..')
+    var programmatic = require('../..')
 
-    var block = source(function () {
+    var block = programmatic(function () {
         return $number
     })
     block.$number('1')
@@ -17,7 +17,7 @@ require('proof')(5, function () {
     console.log(String(method))
     this.equal(method(), 1, 'replace with source')
 
-    block = source(function () {
+    block = programmatic(function () {
         return (
             $number
         )
@@ -30,7 +30,7 @@ require('proof')(5, function () {
     console.log(String(method))
     this.equal(method(), 1, 'replace with multi-line source')
 
-    block = source('\n\
+    block = programmatic('\n\
         return $number  \n\
     ')
     block.$number('1')
@@ -41,10 +41,10 @@ require('proof')(5, function () {
 
     this.equal(method(), 1, 'replace with string')
 
-    block = source('\n\
+    block = programmatic('\n\
         return $number  \n\
     ')
-    var number = source(function () { 1 })
+    var number = programmatic(function () { 1 })
     block.$number(number)
 
     method = block.compile()
