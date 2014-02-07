@@ -12,6 +12,10 @@
     "contributors":
     [
     ],
+    "dependencies":
+    {
+                        "esprima":    "1.0.4"
+    },
     "devDependencies":
     {
                     "proof": "0.0.41",
