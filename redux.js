@@ -1,10 +1,15 @@
 var esprima = require('esprima')
 var ok = require('assert').ok
+var contains = require('subordinate')
 
 function isModuleExports (e) {
-    return e.left.type == 'MemberExpression'
-        && e.left.object.name == 'module'
-        && e.left.property.name == 'exports'
+    return contains(e, {
+        left: {
+            type: 'MemberExpression',
+            object: { name: 'module' },
+            property: { name: 'exports' }
+        }
+    })
 }
 
 exports.generate = function (source) {
