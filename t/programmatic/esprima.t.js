@@ -1,6 +1,7 @@
-require('proof')(1, function (deepEqual) {
+require('proof')(2, function (deepEqual) {
     var redux = require('../../redux')
     var esprima = require('esprima')
+    var escodegen = require('escodegen')
     deepEqual(esprima.parse('var answer = 42'), {
         "type": "Program",
         "body": [
@@ -23,4 +24,7 @@ require('proof')(1, function (deepEqual) {
             }
         ]
     }, 'parse')
+    deepEqual(escodegen.generate(esprima.parse('var answer = 42'), {
+        format: { semicolons: false }
+    }), 'var answer = 42', 'format')
 })
