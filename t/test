@@ -24,39 +24,4 @@ if [ "$TRAVIS" = "true" ]; then
   curl 'https://www.prettyrobots.com/travisty' | sh
 fi
 
-if [ "$TRAVIS" = "true" ] || [ "$MINIFY" = "true" ]; then
-  echo ""
-  echo "minified tests"
-  echo ""
-
-  mkdir -p "minified/t/programmatic"
-
-  cp "index.js" "minified/index.js"
-
-  for file in t/*/*.t.js; do
-    file=`basename $file`
-    uglifyjs < "t/programmatic/$file" > "minified/t/programmatic/$file"
-  done
-
-  (proof run minified/t/*/*.t.js | tee .proof.out | proof progress) || \
-    (proof errors < .proof.out) || exit 1
-
-  echo ""
-  echo "minified source"
-  echo ""
-
-  default=$(cat index.js | uglifyjs | gzip -c | wc -c)
-  lift=$(cat index.js | uglifyjs --lift-vars | gzip -c | wc -c)
-
-  if [ $default -lt $lift ]; then
-    cat "index.js" | uglifyjs > "minified/index.js"
-  else
-    cat "index.js" | uglifyjs --lift-vars > "minified/index.js"
-  fi
-
-  (proof run minified/t/*/*.t.js | tee .proof.out | proof progress) || \
-    (proof errors < .proof.out) || exit 1
-
-fi
-
 echo ""
