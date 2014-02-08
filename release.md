@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Gather containment test structures into map. #43.
  * User Subordinate to test AST nodes. #42.
  * Generate a function from source. #41.
  * Add Escodegen as a dependency. #40.

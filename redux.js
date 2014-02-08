@@ -2,14 +2,14 @@ var esprima = require('esprima')
 var ok = require('assert').ok
 var contains = require('subordinate')
 
-function isModuleExports (e) {
-    return contains(e, {
+var NODE = {
+    moduleExports: {
         left: {
             type: 'MemberExpression',
             object: { name: 'module' },
             property: { name: 'exports' }
         }
-    })
+    }
 }
 
 exports.generate = function (source) {
@@ -17,7 +17,7 @@ exports.generate = function (source) {
     return program.body.filter(function (node) {
         if (node.type == 'ExpressionStatement' && node.expression.type == 'AssignmentExpression') {
             var e = node.expression
-            if (isModuleExports(node.expression)) {
+            if (contains(e, NODE.moduleExports)) {
                 ok(node.expression.right.type == 'FunctionExpression')
                 return true
             }
