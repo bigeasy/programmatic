@@ -1,9 +1,9 @@
 require('../proof')(1, function (dump, equal) {
-    var fs = require('fs'), path = require('path'), redux = require('../../redux')
+    var fs = require('fs'), path = require('path'), programmatic = require('../..')
     var escodegen = require('escodegen')
 
     var body = fs.readFileSync(path.join(__dirname, 'fixtures', 'static.p.js'), 'utf8')
-    var result = redux.generate(body).shift()
+    var result = programmatic.generate(body).shift()
     var source = escodegen.generate(result, { format: { semicolons: false } })
     fs.writeFileSync(path.join(__dirname, 'generators', 'static.js'), source, 'utf8')
     console.log(source)

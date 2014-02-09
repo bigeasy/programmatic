@@ -1,5 +1,5 @@
 require('proof')(2, function (deepEqual) {
-    var redux = require('../../redux')
+    var redux = require('../..')
     var esprima = require('esprima')
     var escodegen = require('escodegen')
     deepEqual(esprima.parse('var answer = 42'), {
