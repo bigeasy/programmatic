@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Implement two stage build, generator/generated. #48.
  * Covert ASTs of arrays to AST of AST. #47.
  * Create AST printing utility. #46.
  * AST of AST converter with identifier keys. #45.

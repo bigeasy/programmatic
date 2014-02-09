@@ -1,6 +1,67 @@
 var esprima = require('esprima')
 var ok = require('assert').ok
 var contains = require('subordinate')
+var util = require('util')
+var incept = require('./lib/incept')
+
+function dump (object) {
+    return util.inspect(object, false, null)
+}
+
+function push (node) {
+    return ({
+        type: 'ExpressionStatement',
+        expression: {
+            type: 'CallExpression',
+            callee: {
+                type: 'MemberExpression',
+                computed: false,
+                object: { type: 'Identifier', name: '$' },
+                property: { type: 'Identifier', name: 'push' }
+            },
+            arguments: [ incept(node) ]
+        }
+    })
+}
+
+function rewrite (outer) {
+    for (var i = 0, I = outer.body.body.length; i < I; i++) {
+        var node = outer.body.body[i]
+        if (contains(node, NODE.returnFunction)) {
+            node.argument.body.body = node.argument.body.body.map(function (node) {
+                return push(node)
+            })
+            outer.body.body.unshift({
+                type: 'VariableDeclaration',
+                 declarations:
+                  [ { type: 'VariableDeclarator',
+                      id: { type: 'Identifier', name: '$' },
+                      init:
+                       { type: 'CallExpression',
+                         callee:
+                          { type: 'CallExpression',
+                            callee: { type: 'Identifier', name: 'require' },
+                            arguments: [ { type: 'Literal', value: 'programmatic/builder' } ] },
+                         arguments: [ incept(node.argument.params) ] } } ],
+                 kind: 'var' })
+            outer.body.body.splice.apply(outer.body.body, [i + 1, 1].concat(node.argument.body.body))
+            outer.body.body.push({
+                type: 'ReturnStatement',
+                argument: {
+                    type: 'CallExpression',
+                    callee: {
+                        type: 'MemberExpression',
+                        computed: false,
+                        object: { type: 'Identifier', name: '$' },
+                        property: { type: 'Identifier', name: 'create' }
+                    },
+                    arguments: []
+                }
+            })
+            break
+        }
+    }
+}
 
 var NODE = {
     moduleExports: {
@@ -9,6 +70,10 @@ var NODE = {
             object: { name: 'module' },
             property: { name: 'exports' }
         }
+    },
+    returnFunction: {
+        type: 'ReturnStatement',
+        argument: { type: 'FunctionExpression' }
     }
 }
 
@@ -23,10 +88,7 @@ exports.generate = function (source) {
             }
         }
     }).map(function (node) {
-        var f = node.expression.right
-        f.params.shift()
-        return [ f.params.map(function (node) {
-            return node.name
-        }), { type: "Program", body: f.body.body  }]
+        rewrite(node.expression.right)
+        return node
     })
 }
