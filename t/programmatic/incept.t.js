@@ -1,5 +1,5 @@
 require('../proof')(2, function (dump, deepEqual) {
-    var incept = require('../../lib/incept')
+    var incept = require('../../incept')
     deepEqual(incept({ a: 1 }), { type: 'ObjectExpression', properties: [
         { type: 'Property',
           key: { type: 'Identifier', name: 'a' },

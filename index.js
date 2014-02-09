@@ -2,7 +2,7 @@ var esprima = require('esprima')
 var ok = require('assert').ok
 var contains = require('subordinate')
 var util = require('util')
-var incept = require('./lib/incept')
+var incept = require('./incept')
 
 function dump (object) {
     return util.inspect(object, false, null)
