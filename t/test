@@ -10,13 +10,6 @@ if [ ! -e "$(pwd)/node_modules/programmatic" ]; then
   ln -s $(pwd) $(pwd)/node_modules/programmatic
 fi
 
-if [ "$TRAVIS" = "true" ]; then
-  echo '$ sudo apt-get install bc' && echo ''
-  sudo apt-get install -q -q bc 2> /dev/null > /dev/null
-fi
-
-t/sizes index.js | sed 's/^/    /'
-
 echo ""
 
 (proof run t/*/*.t.js | tee .proof.out | proof progress) || \
