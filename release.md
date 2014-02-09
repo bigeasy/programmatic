@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Remove `esprima.t.js`. #52.
  * Rename `redux.js` to `index.js`. #51.
  * Delete old library. #50.
  * Rename to `static.t.js`. #49.
