@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Export named functions. #53.
  * Remove `esprima.t.js`. #52.
  * Rename `redux.js` to `index.js`. #51.
  * Delete old library. #50.

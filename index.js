@@ -64,11 +64,14 @@ function rewrite (outer) {
 }
 
 var NODE = {
-    moduleExports: {
+    exportsMember: {
+        type: 'AssignmentExpression',
+        operator: '=',
         left: {
             type: 'MemberExpression',
-            object: { name: 'module' },
-            property: { name: 'exports' }
+            object: {
+                type: 'Identifier', name: 'exports'
+            }
         }
     },
     returnFunction: {
@@ -82,7 +85,7 @@ exports.generate = function (source) {
     return program.body.filter(function (node) {
         if (node.type == 'ExpressionStatement' && node.expression.type == 'AssignmentExpression') {
             var e = node.expression
-            if (contains(e, NODE.moduleExports)) {
+            if (contains(e, NODE.exportsMember)) {
                 ok(node.expression.right.type == 'FunctionExpression')
                 return true
             }

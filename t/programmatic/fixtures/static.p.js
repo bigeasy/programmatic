@@ -1,4 +1,4 @@
-module.exports = function () {
+exports.static = function () {
     return function (value) {
         return value + 1
     }

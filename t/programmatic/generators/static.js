@@ -1,4 +1,4 @@
-module.exports = function () {
+exports.static = function () {
     var $ = require('programmatic/builder')([{
                 type: 'Identifier',
                 name: 'value'
