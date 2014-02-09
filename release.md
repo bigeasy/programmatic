@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Rename to `static.t.js`. #49.
  * Implement two stage build, generator/generated. #48.
  * Covert ASTs of arrays to AST of AST. #47.
  * Create AST printing utility. #46.
