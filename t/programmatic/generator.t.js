@@ -1,11 +1,17 @@
-require('proof')(1, function (equal) {
+require('../proof')(1, function (dump, equal) {
     var fs = require('fs'), path = require('path'), redux = require('../../redux')
     var escodegen = require('escodegen')
 
-    var body = fs.readFileSync(path.join(__dirname, 'fixtures', 'minimal.p.js'), 'utf8')
+    var body = fs.readFileSync(path.join(__dirname, 'fixtures', 'static.p.js'), 'utf8')
     var result = redux.generate(body).shift()
-    console.log(result[1])
-    console.log(JSON.stringify(result[0].concat(escodegen.generate(result[1]))))
-    var f = Function.apply(Function, result[0].concat(escodegen.generate(result[1])))
-    equal(f(1), 1, 'generated')
+    var source = escodegen.generate(result, { format: { semicolons: false } })
+    fs.writeFileSync(path.join(__dirname, 'generators', 'static.js'), source, 'utf8')
+    console.log(source)
+    var generator = require('./generators/static')
+    console.log(dump(generator()))
+    var source = escodegen.generate(generator(), { format: { semicolons: false } })
+    console.log(source)
+    fs.writeFileSync(path.join(__dirname, 'generated', 'static.js'), source, 'utf8')
+    var generated = require('./generated/static')
+    equal(generated(0), 1, 'generated')
 })
