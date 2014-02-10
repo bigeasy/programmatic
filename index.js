@@ -31,6 +31,17 @@ function rewrite (outer) {
             node.argument.body.body = node.argument.body.body.map(function (node) {
                 return push(node)
             })
+            var params = {
+                type: 'ObjectExpression',
+                properties: outer.params.map(function (param) {
+                    return {
+                        type: 'Property',
+                        key: { type: 'Identifier', name: param.name },
+                        value: { type: 'Identifier', name: param.name },
+                        kind: 'init'
+                    }
+                })
+            }
             outer.body.body.unshift({
                 type: 'VariableDeclaration',
                  declarations:
@@ -42,7 +53,7 @@ function rewrite (outer) {
                           { type: 'CallExpression',
                             callee: { type: 'Identifier', name: 'require' },
                             arguments: [ { type: 'Literal', value: 'programmatic/builder' } ] },
-                         arguments: [ incept(node.argument.params) ] } } ],
+                         arguments: [ incept(node.argument.params), params ] } } ],
                  kind: 'var' })
             outer.body.body.splice.apply(outer.body.body, [i + 1, 1].concat(node.argument.body.body))
             outer.body.body.push({

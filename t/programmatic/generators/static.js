@@ -2,7 +2,7 @@ exports.static = function () {
     var $ = require('programmatic/builder')([{
                 type: 'Identifier',
                 name: 'value'
-            }]);
+            }], {});
     $.push({
         type: 'ReturnStatement',
         argument: {
