@@ -46,3 +46,25 @@ complicated than minification isn't it?
 
 Generators can be output, written to file, then distributed as source. They can
 also be unit tested.
+
+## Literals Versus Identifiers
+
+To get going with Programmatic we're going to need build a project, and that
+project is Packet. When I created this library as a string manipulation library,
+I distinquished between replacing literals and identifiers. Whatever reasoning I
+used then, I'm going to use now. After having a code base, I'll be able to see
+if the distinction can be removed.
+
+Also, I'm not going to beat too hard on the syntax. I'll probably use some sort
+of dot notation on the initial variable, the `$` variable, for now. After Packet
+is complete, I can look and see if there are patterns that would make more
+sense.
+
+```javascript
+$('_' + value) // means evaluate
+($ + value) // could mean literal, or quote.
+$ + value // could also mean.
+$(function () {
+    return calculated.values
+}) // evaluated at runtime.
+```
