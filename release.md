@@ -1,3 +1,16 @@
+### Outline Generator Generator Modularization
+
+Outline our constructor pattern; implement a generator generator. Programmatic
+will create an AST for a function that will create an AST. Prorammatic is
+generator that creates a generator. The generator created will produce an AST.
+
+The end user can perform transitions on the generated AST to pretty print the
+generated source and perform various optimizations or beautifications. Variable
+hoisting or constant folding, for example.
+
+At this point, I've only implemented a minimal parameterized template. The idea
+now is to integrate Programmatic with Packet and consider how to invoke the API.
+
 ### Issue by Issue
 
  * Move modules to root. #54.
