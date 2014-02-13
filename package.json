@@ -1,6 +1,6 @@
 {
     "name":         "programmatic",
-    "version":      "0.0.0",
+    "version":      "0.0.1",
     "description":  "A JavaScript macro language for automatically generating JavaScript source.",
     "author":       "Alan Gutierrez <alan@prettyrobots.com>",
     "homepage":     "https://bigeasy.github.io/programmatic",
