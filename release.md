@@ -13,6 +13,7 @@ now is to integrate Programmatic with Packet and consider how to invoke the API.
 
 ### Issue by Issue
 
+ * Update descriptions. #58.
  * Upgrade Proof to 0.0.42. #57.
  * Move modules to root. #54.
  * Export named functions. #53.

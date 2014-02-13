@@ -1,6 +1,6 @@
 Programmatic
 
-Transparent JavaScript source generation from within JavaScript.
+A JavaScript macro language for automatically generating JavaScript source.
 
     Discussion      http://github.com/bigeasy/programmatic/issues/1
 
