@@ -76,15 +76,19 @@ function delineate (lines) {
 }
 
 exports.concept = function () {
-    var parent = -1, spaces = -1, source = [], indent = 0
+    var parent = -1, spaces = -1, source = [], indent = 0, stashed = -1
     __slice.call(arguments).forEach(function (varg) {
-        console.log({ parent: parent, spaces: spaces, indent: indent })
-        if (parent > spaces) {
-            indent++
-        } else if (parent < spaces) {
-            indent--
+        if (parent == -1) {
+            spaces = stashed
+        } else {
+            if (parent > spaces) {
+                indent++
+            } else if (parent < spaces) {
+                indent--
+            }
+            stashed = parent
+            spaces = -1
         }
-        spaces = -1
         delineate(varg).forEach(function (line) {
             if (line[1]) {
                 if (spaces != -1) {
