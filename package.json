@@ -14,9 +14,6 @@
     ],
     "dependencies":
     {
-                        "esprima":    "1.0.4",
-                        "escodegen":  "1.2.0",
-                        "subordinate": "0.0.1"
     },
     "devDependencies":
     {
