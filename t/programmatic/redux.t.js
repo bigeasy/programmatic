@@ -10,4 +10,13 @@ require('proof')(1, function (deepEqual) {
         [ 2, 'if (index == 10) break' ],
         [ 1, '}' ]
     ], 'dedent')
+
+    var s = redux.concept, o = redux.concept, i = 0
+
+    console.log(s('                     \n\
+        var i = 0                       \n\
+        while (i < 10) {                \n\
+            ', o('i++'), '              \n\
+        }                               \n\
+    '))
 })
