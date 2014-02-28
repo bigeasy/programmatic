@@ -107,6 +107,10 @@ exports.concept = function () {
         })
     })
     return source.map(function (line) {
-        return new Array(line[0] * 4 + 1).join(' ') + line[1]
+        if (/__blank__/.test(line)) {
+            return ''
+        } else {
+            return new Array(line[0] * 4 + 1).join(' ') + line[1]
+        }
     }).join('\n')
 }
