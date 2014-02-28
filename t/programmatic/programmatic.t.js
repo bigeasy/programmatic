@@ -12,7 +12,7 @@ var f = 'function () {\n\
 }'
 
 require('proof')(2, function (equal) {
-    var redux  = require('../../redux')
+    var redux  = require('../..')
     var s = redux.concept, inner
     equal(inner = s('                   \n\
         var i = 0                       \n\
