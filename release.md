@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Purge earlier drafts. #65.
  * Designate blank lines. #64.
  * Rename `redux.js` to `index.js`. #63.
  * Remove Esprima. #62.
