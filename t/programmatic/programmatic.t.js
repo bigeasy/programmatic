@@ -20,7 +20,7 @@ var blank = 'function () {\n\
     console.log(i)\n\
 }'
 
-require('proof')(3, function (equal) {
+require('proof')(5, function (equal) {
     var redux  = require('../..')
     var s = redux.concept, inner
     equal(inner = s('                   \n\
@@ -43,4 +43,16 @@ require('proof')(3, function (equal) {
             console.log(i)              \n\
         }                               \n\
     '), blank, 'nested blank line')
+    equal(s('                           \n\
+        var i = 0                       \n\
+        while (i < 10) {                \n\
+            i++                         \n\
+        ', '}', '                       \n\
+    '), loop, 'dedented')
+    equal(s('                           \n\
+        var i = 0                       \n\
+        ', 'while (i < 10)', ' {        \n\
+            i++                         \n\
+        }                               \n\
+    '), loop, 'unchanged')
 })

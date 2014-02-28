@@ -1,5 +1,7 @@
 ### Issue by Issue
 
+ * Correctly catenate code on the same line. #67.
+ * Correctly dedent a subsequent argument. #66.
  * Purge earlier drafts. #65.
  * Designate blank lines. #64.
  * Rename `redux.js` to `index.js`. #63.

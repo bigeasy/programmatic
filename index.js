@@ -7,9 +7,13 @@ function delineate (lines) {
     })
 }
 
+function space (count) {
+    return new Array(count + 1).join(' ')
+}
+
 exports.concept = function () {
     var parent = -1, spaces = -1, source = [], indent = 0, stashed = -1
-    __slice.call(arguments).forEach(function (varg) {
+    __slice.call(arguments).forEach(function (varg, outer) {
         if (parent == -1) {
             spaces = stashed
         } else {
@@ -21,16 +25,20 @@ exports.concept = function () {
             stashed = parent
             spaces = -1
         }
-        delineate(varg).forEach(function (line) {
+        delineate(varg).forEach(function (line, inner) {
             if (line[1]) {
-                if (spaces != -1) {
-                    if (line[0] > spaces) {
-                        indent++
-                    } else if (line[0] < spaces) {
-                        indent--
+                if (!inner && outer && parent == -1) {
+                    source[source.length - 1].push(space(line[0]) + line[1])
+                } else {
+                    if (spaces != -1) {
+                        if (line[0] > spaces) {
+                            indent++
+                        } else if (line[0] < spaces) {
+                            indent--
+                        }
                     }
+                    source.push([ indent, line[1] ])
                 }
-                source.push([ indent, line[1] ])
                 spaces = line[0]
                 parent = -1
             } else {
@@ -42,7 +50,7 @@ exports.concept = function () {
         if (/__blank__/.test(line)) {
             return ''
         } else {
-            return new Array(line[0] * 4 + 1).join(' ') + line[1]
+            return space(line[0] * 4) + line.slice(1).join('')
         }
     }).join('\n')
 }
