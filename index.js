@@ -12,17 +12,18 @@ function space (count) {
 }
 
 module.exports = function () {
-    var parent = -1, spaces = -1, source = [], indent = 0, stashed = -1
+    var parent = -1, spaces = -1, source = [], indent = 0, stashed = { spaces: -1, indent: 0 }
     __slice.call(arguments).forEach(function (varg, outer) {
         if (parent == -1) {
-            spaces = stashed
-        } else {
+            spaces = stashed.spaces
+            indent = stashed.indent
+        } else if (spaces != -1) {
             if (parent > spaces) {
                 indent++
             } else if (parent < spaces) {
                 indent--
             }
-            stashed = parent
+            stashed = { spaces: parent, indent: indent }
             spaces = -1
         }
         delineate(varg).forEach(function (line, inner) {
