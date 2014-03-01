@@ -38,6 +38,7 @@ require('proof')(5, function (equal) {
             ', inner, '                 \n\
                                         \n\
             console.log(i)              \n\
+            // __reference__            \n\
         }                               \n\
     '), f, 'nested multi-line')
     equal(s('                           \n\

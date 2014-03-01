@@ -38,7 +38,9 @@ module.exports = function () {
                             indent--
                         }
                     }
-                    source.push([ indent, line[1] ])
+                    if (!/__reference__/.test(line[1])) {
+                        source.push([ indent, line[1] ])
+                    }
                     spaces = line[0]
                 }
                 parent = -1
