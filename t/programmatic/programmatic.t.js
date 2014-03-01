@@ -41,13 +41,13 @@ require('proof')(5, function (equal) {
             // __reference__            \n\
         }                               \n\
     '), f, 'nested multi-line')
-    equal(s('                           \n\
+    equal(s(['                          \n\
         function () {                   \n\
             ', inner, '                 \n\
             // __blank__                \n\
             console.log(i)              \n\
         }                               \n\
-    '), blank, 'nested blank line')
+    ']), blank, 'nested blank line')
     equal(s('                           \n\
         var i = 0                       \n\
         while (i < 10) {                \n\

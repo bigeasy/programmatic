@@ -12,8 +12,13 @@ function space (count) {
 }
 
 module.exports = function () {
-    var parent = -1, spaces = -1, source = [], indent = 0, stashed = { spaces: -1, indent: 0 }
-    __slice.call(arguments).forEach(function (varg, outer) {
+    var parent = -1, spaces = -1, source = [], indent = 0, stashed = { spaces: -1, indent: 0 },
+        vargs = __slice.call(arguments), tidy
+    if (vargs.length == 1 && Array.isArray(vargs)) {
+        vargs = vargs.shift()
+        tidy = true
+    }
+    vargs.forEach(function (varg, outer) {
         if (parent == -1) {
             spaces = stashed.spaces
             indent = stashed.indent
@@ -50,7 +55,7 @@ module.exports = function () {
         })
     })
     return source.map(function (line) {
-        if (/__blank__/.test(line)) {
+        if (tidy && /__blank__/.test(line)) {
             return ''
         } else {
             return space(line[0] * 4) + line.slice(1).join('')
