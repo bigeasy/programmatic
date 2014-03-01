@@ -21,8 +21,7 @@ var blank = 'function () {\n\
 }'
 
 require('proof')(5, function (equal) {
-    var redux  = require('../..')
-    var s = redux.concept, inner
+    var s  = require('../..'), inner
     equal(inner = s('                   \n\
         var i = 0                       \n\
         while (i < 10) {                \n\

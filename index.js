@@ -11,7 +11,7 @@ function space (count) {
     return new Array(count + 1).join(' ')
 }
 
-exports.concept = function () {
+module.exports = function () {
     var parent = -1, spaces = -1, source = [], indent = 0, stashed = -1
     __slice.call(arguments).forEach(function (varg, outer) {
         if (parent == -1) {
