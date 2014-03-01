@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Update description. #68.
  * Correctly catenate code on the same line. #67.
  * Correctly dedent a subsequent argument. #66.
  * Purge earlier drafts. #65.

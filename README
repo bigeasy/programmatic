@@ -1,6 +1,6 @@
 Programmatic
 
-A JavaScript macro language for automatically generating JavaScript source.
+Catenate multi-line strings preserving indentation.
 
     Discussion      http://github.com/bigeasy/programmatic/issues/1
 
