@@ -1,6 +1,6 @@
 {
     "name":         "programmatic",
-    "version":      "0.0.5",
+    "version":      "0.0.6",
     "description":  "Catenate multi-line strings preserving indentation.",
     "author":       "Alan Gutierrez <alan@prettyrobots.com>",
     "homepage":     "https://bigeasy.github.io/programmatic",
