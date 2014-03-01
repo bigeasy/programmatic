@@ -38,8 +38,8 @@ module.exports = function () {
                         }
                     }
                     source.push([ indent, line[1] ])
+                    spaces = line[0]
                 }
-                spaces = line[0]
                 parent = -1
             } else {
                 parent = line[0]

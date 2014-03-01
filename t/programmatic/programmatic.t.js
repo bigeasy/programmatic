@@ -1,12 +1,14 @@
 var loop = 'var i = 0\n\
 while (i < 10) {\n\
-    i++\n\
+    i++ // foo\n\
+    console.log(i)\n\
 }'
 
 var f = 'function () {\n\
     var i = 0\n\
     while (i < 10) {\n\
-        i++\n\
+        i++ // foo\n\
+        console.log(i)\n\
     }\n\
     console.log(i)\n\
 }'
@@ -14,7 +16,8 @@ var f = 'function () {\n\
 var blank = 'function () {\n\
     var i = 0\n\
     while (i < 10) {\n\
-        i++\n\
+        i++ // foo\n\
+        console.log(i)\n\
     }\n\
 \n\
     console.log(i)\n\
@@ -25,7 +28,8 @@ require('proof')(5, function (equal) {
     equal(inner = s('                   \n\
         var i = 0                       \n\
         while (i < 10) {                \n\
-            ', 'i++', '                 \n\
+            ', 'i++', ' // foo          \n\
+            console.log(i)              \n\
         }                               \n\
     '), loop, 'indented')
     equal(s('                           \n\
@@ -45,13 +49,15 @@ require('proof')(5, function (equal) {
     equal(s('                           \n\
         var i = 0                       \n\
         while (i < 10) {                \n\
-            i++                         \n\
+            i++ // foo                  \n\
+            console.log(i)              \n\
         ', '}', '                       \n\
     '), loop, 'dedented')
     equal(s('                           \n\
         var i = 0                       \n\
         ', 'while (i < 10)', ' {        \n\
-            i++                         \n\
+            i++ // foo                  \n\
+            console.log(i)              \n\
         }                               \n\
     '), loop, 'unchanged')
 })
