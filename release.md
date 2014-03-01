@@ -1,5 +1,6 @@
 ### Issue by Issue
 
+ * Upgrade Proof to 0.0.44. #69.
  * Update description. #68.
  * Correctly catenate code on the same line. #67.
  * Correctly dedent a subsequent argument. #66.
