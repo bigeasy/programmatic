@@ -28,6 +28,7 @@ require('proof')(5, function (equal) {
     equal(inner = s('                   \n\
         var i = 0                       \n\
         while (i < 10) {                \n\
+            ', '', '                    \n\
             ', 'i++', ' // foo          \n\
             console.log(i)              \n\
         }                               \n\
