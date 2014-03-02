@@ -14,7 +14,7 @@ function space (count) {
 module.exports = function () {
     var parent = -1, spaces = -1, source = [], indent = 0, stashed = { spaces: -1, indent: 0 },
         vargs = __slice.call(arguments), tidy
-    if (vargs.length == 1 && Array.isArray(vargs)) {
+    if (vargs.length == 1 && Array.isArray(vargs[0])) {
         vargs = vargs.shift()
         tidy = true
     }
