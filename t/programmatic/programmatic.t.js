@@ -23,9 +23,9 @@ var blank = 'function () {\n\
     console.log(i)\n\
 }'
 
-require('proof')(5, function (equal) {
+require('proof')(5, function (assert) {
     var s  = require('../..'), inner
-    equal(inner = s('                   \n\
+    assert(inner = s('                  \n\
         var i = 0                       \n\
         while (i < 10) {                \n\
             ', '', '                    \n\
@@ -33,7 +33,7 @@ require('proof')(5, function (equal) {
             console.log(i)              \n\
         }                               \n\
     '), loop, 'indented')
-    equal(s('                           \n\
+    assert(s('                          \n\
         function () {                   \n\
             ', inner, '                 \n\
                                         \n\
@@ -41,21 +41,21 @@ require('proof')(5, function (equal) {
             // __reference__            \n\
         }                               \n\
     '), f, 'nested multi-line')
-    equal(s(['                          \n\
+    assert(s(['                         \n\
         function () {                   \n\
             ', inner, '                 \n\
             // __blank__                \n\
             console.log(i)              \n\
         }                               \n\
     ']), blank, 'nested blank line')
-    equal(s('                           \n\
+    assert(s('                          \n\
         var i = 0                       \n\
         while (i < 10) {                \n\
             i++ // foo                  \n\
             console.log(i)              \n\
         ', '}', '                       \n\
     '), loop, 'dedented')
-    equal(s('                           \n\
+    assert(s('                          \n\
         var i = 0                       \n\
         ', 'while (i < 10)', ' {        \n\
             i++ // foo                  \n\

@@ -68,3 +68,9 @@ $(function () {
     return calculated.values
 }) // evaluated at runtime.
 ```
+
+## Multi-Line Strings
+
+Key to making Programmatic work for you is having an editor that correctly
+highlghts multi-line strings. My didn't, and so I've included a patch the the
+JavaScript syntax file for Vim.
