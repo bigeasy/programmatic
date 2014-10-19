@@ -1,3 +1,4 @@
 ### Issue by Issue
 
+ * Rename `index.js` to `programmatic.js`. #85.
  * Upgrade Proof to 0.0.50. #84.

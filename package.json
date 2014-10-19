@@ -12,6 +12,7 @@
     "contributors":
     [
     ],
+    "main":         "programmatic.js",
     "dependencies":
     {
     },
