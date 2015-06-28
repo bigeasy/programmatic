@@ -23,7 +23,9 @@ var blank = 'function () {\n\
     console.log(i)\n\
 }'
 
-require('proof')(5, function (assert) {
+require('proof')(5, prove)
+
+function prove (assert) {
     var s  = require('../..'), inner
     assert(inner = s('                  \n\
         var i = 0                       \n\
@@ -33,14 +35,14 @@ require('proof')(5, function (assert) {
             console.log(i)              \n\
         }                               \n\
     '), loop, 'indented')
-    assert(s('                          \n\
+    assert(s(['                         \n\
         function () {                   \n\
             ', inner, '                 \n\
                                         \n\
             console.log(i)              \n\
             // __reference__            \n\
         }                               \n\
-    '), f, 'nested multi-line')
+    ']), f, 'nested multi-line')
     assert(s(['                         \n\
         function () {                   \n\
             ', inner, '                 \n\
@@ -62,4 +64,4 @@ require('proof')(5, function (assert) {
             console.log(i)              \n\
         }                               \n\
     '), loop, 'unchanged')
-})
+}

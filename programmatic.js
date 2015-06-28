@@ -43,9 +43,7 @@ module.exports = function () {
                             indent--
                         }
                     }
-                    if (!/__reference__/.test(line[1])) {
-                        source.push([ indent, line[1] ])
-                    }
+                    source.push([ indent, line[1] ])
                     spaces = line[0]
                 }
                 parent = -1
@@ -54,8 +52,13 @@ module.exports = function () {
             }
         })
     })
+    if (tidy) {
+        source = source.filter(function (line) {
+            return ! /__reference__/.test(line[1])
+        })
+    }
     return source.map(function (line) {
-        if (tidy && /__blank__/.test(line)) {
+        if (tidy && /__blank__/.test(line[1])) {
             return ''
         } else {
             return space(line[0] * 4) + line.slice(1).join('')
