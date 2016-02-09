@@ -25,11 +25,7 @@
     {
                     "test": "proof platform win32 && proof test */*/*.t.* || t/test"
     },
-    "licenses":
-    [{
-                    "type": "MIT",
-                    "url": "http://github.com/bigeasy/programmatic/raw/master/LICENSE"
-    }],
+    "license":      "MIT",
     "repository":
     {
                     "type": "git",
