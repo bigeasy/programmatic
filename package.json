@@ -1,34 +1,35 @@
 {
-    "name":         "programmatic",
-    "version":      "1.0.0",
-    "description":  "Catenate multi-line strings preserving indentation.",
-    "author":       "Alan Gutierrez <alan@prettyrobots.com>",
-    "homepage":     "https://bigeasy.github.io/programmatic",
-    "bugs":         "https://github.com/bigeasy/programmatic/issues",
+    "name":                 "programmatic",
+    "version":              "1.0.0",
+    "description":
+
+      "Catenate multi-line strings preserving indentation.",
+
     "keywords":
     [
-                    "generation", "meta",  "source", "javascript"
+                            "generation", "meta", "source", "javascript"
     ],
-    "contributors":
-    [
-    ],
-    "main":         "programmatic.js",
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "contributors":         [],
+    "homepage":             "https://bigeasy.github.io/programmatic",
+    "bugs":                 "https://github.com/bigeasy/programmatic/issues",
+    "license":              "MIT",
+    "repository":
+    {
+                            "type": "git",
+                            "url": "bigeasy/programmatic"
+    },
     "dependencies":
     {
     },
     "devDependencies":
     {
-                    "proof": "7.0.x",
-                    "uglify-js": "~1.3"
+                            "proof":                        "7.0.x",
+                            "uglify-js":                    "~1.3"
     },
+    "main":                 "programmatic.js",
     "scripts":
     {
-                    "test": "proof platform win32 && proof test */*/*.t.* || t/test"
-    },
-    "license":      "MIT",
-    "repository":
-    {
-                    "type": "git",
-                    "url": "bigeasy/programmatic"
+                            "test": "proof platform win32 && proof test */*/*.t.* || t/test"
     }
 }
