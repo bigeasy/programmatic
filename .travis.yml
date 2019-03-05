@@ -1,16 +1,20 @@
+sudo: false
+
 language: node_js
 
 node_js:
-  - '0.10'
-  - '0.12'
-  - '4'
-  - '5'
+  - '6'
+  - '8'
+  - '10'
 
 branches:
   only:
     - master
     - travis-ci
 
-before_install:
-  - npm install
-  - npm install istanbul coveralls
+install:
+  - npm install --no-package-lock --no-save
+  - npm install -g nyc
+
+script:
+  - nyc npm test

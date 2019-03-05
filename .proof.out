@@ -1,0 +1,17 @@
+1551823528241 run  t/programmatic/programmatic.t.js
+1551823528349 plan t/programmatic/programmatic.t.js 5
+1551823528350 test t/programmatic/programmatic.t.js ok 1 indented
+1551823528351 test t/programmatic/programmatic.t.js ok 2 nested multi-line
+1551823528351 test t/programmatic/programmatic.t.js ok 3 nested blank line
+1551823528351 test t/programmatic/programmatic.t.js ok 4 dedented
+1551823528351 test t/programmatic/programmatic.t.js ok 5 unchanged
+1551823528351 out  t/programmatic/programmatic.t.js # expected   5
+1551823528352 out  t/programmatic/programmatic.t.js # passed     5
+1551823528360 exit t/programmatic/programmatic.t.js 0 null
+1551823528366 run  t/programmatic/require.t.js
+1551823528486 plan t/programmatic/require.t.js 1
+1551823528489 test t/programmatic/require.t.js ok 1 require
+1551823528490 out  t/programmatic/require.t.js # expected   1
+1551823528490 out  t/programmatic/require.t.js # passed     1
+1551823528496 exit t/programmatic/require.t.js 0 null
+1551823528498 eof  *
