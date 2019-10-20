@@ -24,11 +24,11 @@
     },
     "devDependencies":
     {
-                            "proof":                        "7.0.x"
+                            "proof":                        "^8.0.0-alpha.8"
     },
     "main":                 "programmatic.js",
     "scripts":
     {
-                            "test": "proof test test/*/*.t.js"
+                            "test": "proof test/*/*.t.js"
     }
 }
