@@ -26,7 +26,8 @@ var blank = `function () {
 require('proof')(5, prove)
 
 function prove (assert) {
-    var s  = require('..'), inner
+    const s = require('..')
+    let inner
     assert(inner = s(`
         var i = 0
         while (i < 10) {

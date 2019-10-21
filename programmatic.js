@@ -1,8 +1,6 @@
-var __slice = [].slice
-
 function delineate (lines) {
     return lines.split(/\n/).map(function (line) {
-        var $ = /^(\s*)(.*)$/.exec(line)
+        const $ = /^(\s*)(.*)$/.exec(line)
         return [ $[1].length, $[2].trim() ]
     })
 }
@@ -11,9 +9,8 @@ function space (count) {
     return new Array(count + 1).join(' ')
 }
 
-module.exports = function () {
-    var parent = -1, spaces = -1, source = [], indent = 0, stashed = { spaces: -1, indent: 0 },
-        vargs = __slice.call(arguments), tidy
+module.exports = function (...vargs) {
+    let parent = -1, spaces = -1, source = [], indent = 0, stashed = { spaces: -1, indent: 0 }, tidy
     if (vargs.length == 1 && Array.isArray(vargs[0])) {
         vargs = vargs.shift()
         tidy = true
