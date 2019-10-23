@@ -36,14 +36,13 @@ function prove (assert) {
             console.log(i)
         }
     `), loop, 'indented')
-    assert(s([`
+    assert(s(`
         function () {
             `, inner, `
 
             console.log(i)
-            // __reference__
         }
-    `]), f, 'nested multi-line')
+    `), f, 'nested multi-line')
     assert(s([`
         function () {
             `, inner, `
