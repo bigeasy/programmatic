@@ -19,7 +19,11 @@ const message = `Title
 
 Closes #3.
 `
-require('proof')(4, (okay) => {
+const blanked = `
+for (var i = 0; i < 9; i++) {
+    console.log(i)
+}`
+require('proof')(5, (okay) => {
     const $ = require('../redux')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
@@ -47,4 +51,10 @@ require('proof')(4, (okay) => {
         Closes #${3}.
 
     `), message, 'message')
+    okay($(`
+
+        for (var i = 0; i < 9; i++) {
+            console.log(i)
+        }
+    `), blanked, 'leading blank')
 })

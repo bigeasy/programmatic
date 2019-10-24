@@ -13,7 +13,9 @@ module.exports = function (...vargs) {
             lines.pop()
         }
         if (i == 0) {
-            offset = dedent = Math.floor(lines[0][0].length / stop) * stop
+            offset = dedent = Math.floor(lines.filter(line => {
+                return line[1] != ''
+            })[0][0].length / stop) * stop
         } else if (i % 2 == 1) {
             dedent = 0
             indent = source.pop()[0]
