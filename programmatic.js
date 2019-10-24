@@ -1,7 +1,7 @@
 function delineate (lines) {
     return lines.split(/\n/).map(function (line) {
         const $ = /^(\s*)(.*)$/.exec(line)
-        return [ $[1].length, $[2] ]
+        return [ $[1].length, $[2].trim() ]
     })
 }
 
