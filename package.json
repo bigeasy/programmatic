@@ -26,7 +26,7 @@
     {
                             "proof":                        "^8.0.0-alpha.8"
     },
-    "main":                 "redux.js",
+    "main":                 "programmatic.js",
     "scripts":
     {
                             "test": "proof test/*.t.js"
