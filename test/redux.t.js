@@ -28,7 +28,7 @@ for (var i = 0; i < 9; i++) {
     console.log(i)
 }`
 require('proof')(5, (okay) => {
-    const $ = require('../redux')
+    const $ = require('..')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
             console.log('here')
