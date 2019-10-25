@@ -28,5 +28,5 @@ module.exports = function (...vargs) {
             source.push([ indent + line[0].substr(dedent), line[1] ])
         }
     }
-    return source.map(line => line.join('')).join('\n')
+    return source.map(line => line[1] == '' ? '' : line.join('')).join('\n')
 }

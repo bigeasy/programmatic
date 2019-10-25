@@ -1,8 +1,12 @@
 const loop = `for (var i = 0; i < 9; i++) {
+    console.log('here')
+
     console.log(i)
 }`
 const f = `function f () {
     for (var i = 0; i < 9; i++) {
+        console.log('here')
+
         console.log(i)
     }
 
@@ -27,6 +31,8 @@ require('proof')(5, (okay) => {
     const $ = require('../redux')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
+            console.log('here')
+
             console.log(i)
         }
     `)
