@@ -2,7 +2,6 @@ module.exports = function (...vargs) {
     const stop = typeof vargs[0] == 'number' ? vargs.shift() : 1
     let offset = null, dedent = null, indent = ''
     const source = []
-    const sources = [ source ]
     for (let i = 0, I = vargs.length; i < I; i++) {
         const varg = vargs[i]
         const lines = varg.split(/\n/).map((line) => /^(\s*)(.*)$/.exec(line).slice(1, 3))
