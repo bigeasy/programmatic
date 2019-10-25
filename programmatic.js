@@ -13,7 +13,7 @@ module.exports = function (...vargs) {
         }
         if (i == 0) {
             offset = dedent = Math.floor(lines.filter(line => {
-                return line[1] != ''
+                return line[0] != '' || line[1] != ''
             })[0][0].length / stop) * stop
         } else if (i % 2 == 1) {
             dedent = 0
