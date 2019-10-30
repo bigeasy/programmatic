@@ -1,9 +1,13 @@
 module.exports = function (...vargs) {
     const stop = typeof vargs[0] == 'number' ? vargs.shift() : 1
-    let offset = null, dedent = null, indent = ''
+    let offset = null, dedent = null, indent = '', erase = true
     const source = []
     for (let i = 0, I = vargs.length; i < I; i++) {
         const varg = vargs[i]
+        if (varg == null) {
+            source.pop()
+            continue
+        }
         const lines = varg.split(/\n/).map((line) => /^(\s*)(.*)$/.exec(line).slice(1, 3))
         if (i == 0) {
             lines.shift()

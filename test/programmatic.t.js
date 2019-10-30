@@ -27,7 +27,10 @@ const blanked = `
 for (var i = 0; i < 9; i++) {
     console.log(i)
 }`
-require('proof')(5, (okay) => {
+
+const erased = `{
+}`
+require('proof')(6, (okay) => {
     const $ = require('..')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
@@ -63,4 +66,10 @@ require('proof')(5, (okay) => {
             console.log(i)
         }
     `), blanked, 'leading blank')
+
+    okay($(`
+        {
+            `, null, `
+        }
+    `), erased, 'erase')
 })
