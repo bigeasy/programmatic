@@ -1,11 +1,12 @@
 module.exports = function (...vargs) {
     const stop = typeof vargs[0] == 'number' ? vargs.shift() : 1
-    let offset = null, dedent = null, indent = '', erase = true
+    let offset = null, dedent = null, indent = '', erase = true, eat = false
     const source = []
     for (let i = 0, I = vargs.length; i < I; i++) {
         const varg = vargs[i]
         if (varg == null) {
             source.pop()
+            eat = true
             continue
         }
         const lines = varg.split(/\n/).map((line) => /^(\s*)(.*)$/.exec(line).slice(1, 3))
@@ -15,6 +16,10 @@ module.exports = function (...vargs) {
         if (i == I - 1) {
             lines.pop()
         }
+        while (eat && /^\s*$/.test(lines[0][1] + lines[1][1])) {
+            lines.shift()
+        }
+        eat = false
         if (i == 0) {
             offset = dedent = Math.floor(lines.filter(line => {
                 return line[0] != '' || line[1] != ''

@@ -29,6 +29,7 @@ for (var i = 0; i < 9; i++) {
 }`
 
 const erased = `{
+    let i = 0
 }`
 require('proof')(6, (okay) => {
     const $ = require('..')
@@ -70,6 +71,8 @@ require('proof')(6, (okay) => {
     okay($(`
         {
             `, null, `
+
+            let i = 0
         }
     `), erased, 'erase')
 })
