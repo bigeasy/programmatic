@@ -18,9 +18,9 @@ A comparator function builder.
 ```
 npm install programmatic
 ```
-
-Programmatic is HEREDOCs for Node.js. It lets you generate correctly indented
-code in any language.
+Programmatic is the equivalent of HEREDOCs from shell programming with support
+for maintaining the indentation of interpolated snippets. It lets you generate
+code with proper indentation in any language.
 
 ```javascript
 function generate (count) {
@@ -56,10 +56,7 @@ function () {
 }
 ```
 
-I've used Programmatic to create generate some pretty intense code. With ES6
-string templates, I've found that the code generation has actually been pretty
-easy to read and maintain. Ultimately easier than using escodgen or similar for
-my purposes. Far more lightweight. Programmatic is a single 31 line Node.js
-module.
-
-Use Programmatic to generate nicely formatted JSON, Markdown or JavaScript.
+I've used Programmatic to create generate some rather intense code. With ES6
+string templates, I've found that the code generation has actually been easy to
+read and maintain. Ultimately easier than using escodgen or similar for my
+purposes. Far more lightweight. Programmatic is a single 40 line Node.js module.
