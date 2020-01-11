@@ -16,7 +16,7 @@ module.exports = function (...vargs) {
         if (i == I - 1) {
             lines.pop()
         }
-        while (eat && /^\s*$/.test(lines[0][1] + lines[1][1])) {
+        while (eat && (lines[0][1].length + lines[1][0].length + lines[1][1].length) == 0) {
             lines.shift()
         }
         eat = false
