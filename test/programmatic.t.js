@@ -31,7 +31,8 @@ for (var i = 0; i < 9; i++) {
 const erased = `{
     let i = 0
 }`
-require('proof')(6, (okay) => {
+
+require('proof')(7, okay => {
     const $ = require('..')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
@@ -70,9 +71,17 @@ require('proof')(6, (okay) => {
 
     okay($(`
         {
-            `, null, `
+            `, null, -1, `
 
             let i = 0
         }
-    `), erased, 'erase')
+    `), erased, 'fast-forward')
+
+    okay($(`
+        {
+            let i = 0
+
+            `, -1, null, `
+        }
+    `), erased, 'rewind')
 })

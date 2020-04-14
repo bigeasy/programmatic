@@ -1,30 +1,41 @@
 module.exports = function (...vargs) {
     const stop = typeof vargs[0] == 'number' ? vargs.shift() : 1
-    let offset = null, dedent = null, indent = '', erase = true, eat = false
+    let offset = null, dedent = null, indent = '', ff = -1, rewind, literal = false, i = -1
     const source = []
-    for (let i = 0, I = vargs.length; i < I; i++) {
-        const varg = vargs[i]
-        if (varg == null) {
-            source.pop()
-            eat = true
-            continue
+    while (vargs.length != 0) {
+        i++
+        literal = i % 2 == 0
+        if (!literal) {
+            rewind = typeof vargs[0] == 'number' ? vargs.shift() : 0
         }
-        const lines = varg.split(/\n/).map((line) => /^(\s*)(.*)$/.exec(line).slice(1, 3))
-        if (i == 0) {
-            lines.shift()
+        const varg = vargs.shift()
+        if (!literal) {
+            ff = typeof vargs[0] == 'number' ? vargs.shift() : 0
         }
-        if (i == I - 1) {
+        if (!literal) {
+            if (varg == null) {
+                source.pop()
+                while (rewind++ != 0) {
+                    source.pop()
+                }
+                continue
+            } else {
+                ff = 0
+            }
+        }
+        const lines = varg.split(/\n/).map(line => /^(\s*)(.*)$/.exec(line).slice(1, 3))
+        if (vargs.length == 0) {
             lines.pop()
         }
-        while (eat && (lines[0][1].length + lines[1][0].length + lines[1][1].length) == 0) {
+        while (ff != 0) {
             lines.shift()
+            ff++
         }
-        eat = false
         if (i == 0) {
             offset = dedent = Math.floor(lines.filter(line => {
                 return line[0] != '' || line[1] != ''
             })[0][0].length / stop) * stop
-        } else if (i % 2 == 1) {
+        } else if (!literal) {
             dedent = 0
             indent = source.pop()[0]
         } else {
