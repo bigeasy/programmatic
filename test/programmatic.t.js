@@ -48,7 +48,21 @@ case 1:
 
     $step++`
 
-require('proof')(9, okay => {
+const yes = `function () {
+    return 1
+} ()`
+
+const no = `function () {
+    return 2
+} ()`
+
+const inline = `value ? function () {
+    return 1
+} () : function () {
+    return 2
+} ()`
+
+require('proof')(11, okay => {
     const $ = require('..')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
@@ -114,4 +128,14 @@ require('proof')(9, okay => {
 
         `, '$step++', `
     `), seek, 'seek dedent')
+
+    function ternary (value, yes, no) {
+        return $(`
+            ${value} ? `, yes, ' : ', no, `
+        `)
+    }
+
+    okay(ternary('value', '1', '2'), 'value ? 1 : 2', 'inline')
+
+    okay(ternary('value', yes, no), inline, 'inline indented')
 })

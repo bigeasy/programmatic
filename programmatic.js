@@ -60,8 +60,8 @@ module.exports = function (...vargs) {
                 source.pop()
             }
         } else if (j != 0) {
-            if (lines[0][1] != '') {
-                source[source.length - 1][1] += lines[0][1]
+            if (lines[0][0] != '' || lines[0][1] != '') {
+                source[source.length - 1][1] += lines[0][0] + lines[0][1]
             }
             lines.shift()
             dedent = offset
