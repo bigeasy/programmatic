@@ -42,7 +42,13 @@ const snuggled = `case 1:
     } (true)) {
     }`
 
-require('proof')(8, okay => {
+const seek = `    $step = 1
+
+case 1:
+
+    $step++`
+
+require('proof')(9, okay => {
     const $ = require('..')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
@@ -100,4 +106,12 @@ require('proof')(8, okay => {
             select (`, select, `) {
             }
     `), snuggled, 'snuggled')
+
+    okay($(`
+        $step = 1
+
+    case 1:
+
+        `, '$step++', `
+    `), seek, 'seek dedent')
 })

@@ -61,7 +61,7 @@ and found it to be rather maintainable. It's easy to see from the source what
 where the JavaScript code is generated and the varible bits stand out. With ES6
 string templates it's even easier to read than before when I had to `+` a bunch
 of strings together. Ultimately easier than using escodgen or similar for my
-purposes. Far more lightweight. Programmatic is a single 59 line Node.js module.
+purposes. Far more lightweight. Programmatic is a single 75 line Node.js module.
 
 Programmatic as a simple API. Most of Programmatic's logic is in the rules. Easy
 enough to follow, but also, easy enough to forget.
