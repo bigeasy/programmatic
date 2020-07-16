@@ -32,7 +32,17 @@ const erased = `{
     let i = 0
 }`
 
-require('proof')(7, okay => {
+const select = `function (bool) {
+    return bool
+} (true)`
+
+const snuggled = `case 1:
+    select (function (bool) {
+        return bool
+    } (true)) {
+    }`
+
+require('proof')(8, okay => {
     const $ = require('..')
     const $loop = $(`
         for (var i = 0; i < 9; i++) {
@@ -84,4 +94,10 @@ require('proof')(7, okay => {
             `, -1, null, `
         }
     `), erased, 'rewind')
+
+    okay($(`
+        case 1:
+            select (`, select, `) {
+            }
+    `), snuggled, 'snuggled')
 })

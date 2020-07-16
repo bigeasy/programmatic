@@ -37,8 +37,16 @@ module.exports = function (...vargs) {
             })[0][0].length / stop) * stop
         } else if (!literal) {
             dedent = 0
-            indent = source.pop()[0]
+            indent = source[source.length - 1][0]
+            if (source[source.length - 1][1] != '') {
+                source[source.length - 1][1] += lines.shift()[1]
+            } else {
+                source.pop()
+            }
         } else {
+            if (lines[0][1] != '') {
+                source[source.length - 1][1] += lines[0][1]
+            }
             lines.shift()
             dedent = offset
             indent = ''

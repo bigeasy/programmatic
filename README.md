@@ -56,18 +56,132 @@ function () {
 }
 ```
 
-I've used Programmatic to create generate some rather intense code. With ES6
-string templates, I've found that the code generation has actually been easy to
-read and maintain. Ultimately easier than using escodgen or similar for my
-purposes. Far more lightweight. Programmatic is a single 40 line Node.js module.
+I've used Programmatic to create generate some rather intense JavaScript code
+and found it to be rather maintainable. It's easy to see from the source what
+where the JavaScript code is generated and the varible bits stand out. With ES6
+string templates it's even easier to read than before when I had to `+` a bunch
+of strings together. Ultimately easier than using escodgen or similar for my
+purposes. Far more lightweight. Programmatic is a single 59 line Node.js module.
 
 Programmatic as a simple API. Most of Programmatic's logic is in the rules. Easy
 enough to follow, but also, easy enough to forget.
 
-Rule one, Programmatic uses interpolated literals for indentation, variables for
-inserting property formatted blocks. The variables are supposed to be blocks
-you've created with an invocation of Programmatic. Stray from this and you'll
-get the unexpected.
+**Rule 1**: The arguments to Programmatic alternate between a literal value and
+an interpolated value starting with a literal value and ending with a literal
+value.
+
+In the following example the `generate` function calles Programmatic with a
+literal followed by a variable for the function body, followed by another
+literal. The indentation from the JavaScript template string is stripped so that
+the keyword `function` in the generated source is is flush left, but the body
+variable is indented by the four spaces relative to the keyword `function` in
+the string template.
+
+```javascript
+const $ = require('programmatic')
+
+function generate (body) {
+    return $(`
+        function f () {
+            `, body, `
+        }
+    `)
+}
+
+console.log(generate, 'return 1'))
+```
+
+The output program emits the following.
+
+```text
+function f () {
+    return 1
+}
+```
+
+_TK_ Good news is that you can use interpolation in your literals, so if you
+have variables that are inline instead of indented, use interpolation.
+
+_TK_ Here is where you can mention the new snuggle mode. **TODO** How hard can I
+snuggle?
+
+**Rule 2**: The very first line and the very last line are discarded. You won't
+have to think about this rule because it is just the natural way in which
+Programmatic is expressed in your code.
+
+_TK_: Repeat the example above.
+
+**Rule 3**: Programmatic uses the left most character of all the literals to
+determine how far to dedent the JavaScript source string. _TK_
+
+**Rule 4**: Variables must already be completely dedented.
+
+**Rule 5**: `null` variables are not printed and delete their line.
+
+**Rule 6**: No white space in blank lines. Maybe I'll accommodate people who
+can't control their editors someday, but until then... And wait, why does it
+even matter really? Check to see if it doesn't and if it doesn't then we only
+have five rules.
+
+```javascript
+function generateFunction (name, signature, body) {
+    console.log('--- function body ---')
+    console.log(body)
+    return $(`
+        function ${name} (${signature.join(', ')}) {
+            `, body, `
+        }
+    `)
+}
+
+function generateSwitch (select, body) {
+    console.log(body)
+    console.log('--- ^ switch body ---')
+    return $(`
+        switch (${select}) {
+        `, body, `
+        }
+    `)
+}
+
+const body = $(`
+    case 0:
+        return 'off'
+    case 1:
+        return 'on'
+`)
+
+console.log(generateFunction('convert', ['value' ], generateSwitch('value', body)))
+```
+
+In the above the call to `console.log(body)` should emit the following to the
+console. The variable does not include indentation.
+
+```text
+case 0:
+    return 'off'
+case 1:
+    return 'on'
+--- ^ switch body ---
+switch (value) {
+case 0:
+    return 'off'
+case 1:
+    return 'on'
+}
+--- ^ function body ---
+function convert (value) {
+    switch (value) {
+    case 0:
+        return 'off'
+    case 1:
+        return 'on'
+    }
+}
+```
+
+Programmatic has removed the leading spaces from the string literals in the
+JavaScript code
 
 ```javasript
 function generate (consts, lets, body) {
