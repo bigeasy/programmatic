@@ -163,7 +163,7 @@ string literal.
 Here is a `test` function that will load a file from our test directory.
 
 ```javascript
-//{ "unblock": true, "name": "test" }
+//{ "name": "test" }
 const fs = require('fs')
 const path = require('path')
 

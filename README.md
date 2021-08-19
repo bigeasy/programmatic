@@ -133,12 +133,14 @@ string literal.
 Here is a `test` function that will load a file from our test directory.
 
 ```javascript
-t path = require('path')
+const fs = require('fs')
+const path = require('path')
 
-tion test (actual, name) {
-const expected = fs.readFileSync(path.resolve(__dirname, '..', name), 'utf8').split('\n')
-expected.pop()
-okay(actual.split('\n'), expected, name)
+function test (actual, name) {
+    const expected = fs.readFileSync(path.resolve(__dirname, '..', name), 'utf8').split('\n')
+    expected.pop()
+    okay(actual.split('\n'), expected, name)
+}
 ```
 
 Now when we want to show the output we'll write a test block and the follow it
