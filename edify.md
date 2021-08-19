@@ -17,13 +17,22 @@ A comparator function builder.
 Programmatic installs from NPM.
 
 ```
+//{ "mode": "text" }
 npm install programmatic
 ```
 
 ## Overview
 
 ```javascript
-const { compare, raise, equal } = require('programmatic')
+//{ "mode": "code" }
+(function () {
+    //{ "include": "overview" }
+}) ()
+```
+
+```javascript
+//{ "name": "overview", "code": { "require": "'..'" }, "text": { "require": "'programmatic'" } }
+const { compare, raise, equal } = require(%(require)s)
 ```
 
 We use the name "extant" on NPM because we want the first extant argument.
@@ -36,18 +45,26 @@ Proof `okay` function to assert out statements in the readme. A Proof unit test
 generally looks like this.
 
 ```javascript
-require('proof')(4, async okay => {
-    okay('always okay')
-    okay(true, 'okay if true')
-    okay(1, 1, 'okay if equal')
-    okay({ value: 1 }, { value: 1 }, 'okay if deep strict equal')
+//{ "code": { "tests": 12 }, "text": { "tests": 4  } }
+require('proof')(%(tests)d, async okay => {
+    //{ "include": "test", "mode": "code" }
+    //{ "include": "proof" }
 })
+```
+
+```javascript
+//{ "name": "proof", "mode": "text" }
+okay('always okay')
+okay(true, 'okay if true')
+okay(1, 1, 'okay if equal')
+okay({ value: 1 }, { value: 1 }, 'okay if deep strict equal')
 ```
 
 You can run this unit test yourself to see the output from the various
 code sections of the readme.
 
 ```text
+//{ "mode": "text" }
 git clone git@github.com:bigeasy/programmatic.git
 cd programmatic
 npm install --no-package-lock --no-save
@@ -59,7 +76,8 @@ node test/readme.t.js
 The `'extant'` module exports a single `coalesce` function.
 
 ```javascript
-const $ = require('programmatic')
+//{ "name": "test", "code": { "require": "'..'" }, "text": { "require": "'programmatic'" } }
+const $ = require(%(require)s)
 ```
 
 Note that Extant is SQL's `COALESCE`. It returns the first non-null-like value,
@@ -67,26 +85,29 @@ that is the first value that is not `== null`, which would be `null` or
 `undefined`. If there is no such argument it returns `null`.
 
 ```javascript
-okay('test')
+//{ "unblock": true, "name": "test" }
+{
+    okay('test')
 
-function testx (name, source) {
-    const fs = require('fs')
-    const path = require('path')
+    function testx (name, source) {
+        const fs = require('fs')
+        const path = require('path')
 
-    const generated = path.resolve(__dirname, name + '.txt')
+        const generated = path.resolve(__dirname, name + '.txt')
 
-    try {
-        const saved = fs.readFileSync(generated, 'utf8')
-        okay(source, saved, name)
-    } catch (e) {
-        if (e.code != 'ENOENT') {
-            throw e
+        try {
+            const saved = fs.readFileSync(generated, 'utf8')
+            okay(source, saved, name)
+        } catch (e) {
+            if (e.code != 'ENOENT') {
+                throw e
+            }
+            fs.writeFileSync(generated, source, 'utf8')
+            okay(false, name)
         }
-        fs.writeFileSync(generated, source, 'utf8')
-        okay(false, name)
-    }
 
-    return source
+        return source
+    }
 }
 ```
 
@@ -95,35 +116,44 @@ for maintaining the indentation of interpolated snippets. It lets you generate
 code with proper indentation in any language.
 
 ```javascript
-const hello = $(`
-    hello, world
-`)
+//{ "unblock": "true", "name": "test" }
+{
+    const hello = $(`
+        hello, world
+    `)
 
-okay(hello, 'hello, world', 'de-dented and trimmed')
+    okay(hello, 'hello, world', 'de-dented and trimmed')
+}
 ```
 
 You cannot exclude the leading a trailing blank from the pattern.
 
 ```javascript
-const hello = $('hello, world')
+//{ "unblock": "true", "name": "test" }
+{
+    const hello = $('hello, world')
 
-okay(hello, '', 'gets trimmed to oblivion')
+    okay(hello, '', 'gets trimmed to oblivion')
+}
 ```
 
 If you have multiple lines they are dedented to the least indented line.
 
 ```javascript
-const hello = $(`
-        hello
+//{ "unblock": "true", "name": "test" }
+{
+    const hello = $(`
+            hello
 
-    world
-`)
+        world
+    `)
 
-okay(hello, [
-    '    hello',
-    '',
-    'world'
-].join('\n'), 'gets trimmed to oblivion')
+    okay(hello, [
+        '    hello',
+        '',
+        'world'
+    ].join('\n'), 'gets trimmed to oblivion')
+}
 ```
 
 Before we go further, let's set a convention for tests so we can view the
@@ -133,26 +163,33 @@ string literal.
 Here is a `test` function that will load a file from our test directory.
 
 ```javascript
-t path = require('path')
+//{ "unblock": true, "name": "test" }
+const fs = require('fs')
+const path = require('path')
 
-tion test (actual, name) {
-const expected = fs.readFileSync(path.resolve(__dirname, '..', name), 'utf8').split('\n')
-expected.pop()
-okay(actual.split('\n'), expected, name)
+function test (actual, name) {
+    const expected = fs.readFileSync(path.resolve(__dirname, '..', name), 'utf8').split('\n')
+    expected.pop()
+    okay(actual.split('\n'), expected, name)
+}
 ```
 
 Now when we want to show the output we'll write a test block and the follow it
 with the contents of the files referenced in the test.
 
 ```javascript
-test($(`
-    hello, world
-`), './test/hello.txt')
+//{ "unblock": true, "name": "test" }
+{
+    test($(`
+        hello, world
+    `), './test/hello.txt')
+}
 ```
 
 Contents of `./test/hello.txt`.
 
 ```javascript
+//{ "mode": "text", "save": "./test/hello.txt" }
 hello, world
 ```
 
@@ -160,22 +197,26 @@ If we have more than one `equalsFile` test in a test block we'll just repeat our
 file contents blocks until we've referenced all the files in the test.
 
 ```javascript
-test($(`
-    hello,
-
-    world
-`), './test/hello-multi-line.txt')
-
-test($(`
+//{ "unblock": true, "name": "test" }
+{
+    test($(`
         hello,
 
-    world
-`), './test/hello-dedent.txt')
+        world
+    `), './test/hello-multi-line.txt')
+
+    test($(`
+            hello,
+
+        world
+    `), './test/hello-dedent.txt')
+}
 ```
 
 Contents of `./test/hello-multi-line.txt`.
 
 ```javascript
+//{ "mode": "text", "save": "./test/hello-multi-line.txt" }
 hello,
 
 world
@@ -184,6 +225,7 @@ world
 Contents of `./test/hello-dedent.txt`.
 
 ```javascript
+//{ "mode": "text", "save": "./test/hello-dedent.txt" }
     hello,
 
 world
@@ -193,6 +235,7 @@ Now that we understand and hopefully trust dedenting, let's use it to test
 interpolation. Let's define a function called `HEREDOC`.
 
 ```javascript
+//{ "name": "test" }
 function HEREDOC (string) {
     const lines = string.split('\n').map(line => {
         return /\S/.test(line)
@@ -213,52 +256,60 @@ function HEREDOC (string) {
 Let's test that `HEREDOC` works correctly.
 
 ```javascrit
-okay(HEREDOC(`
-    hello, world
-`), 'hello, world', 'HEREDOC trim and dedent')
-okay(HEREDOC(`
-    hello,
-    world
-`), 'hello,\nworld', 'HEREDOC trim and dedent multiline')
-okay(HEREDOC(`
-    hello,
-
-    world
-`), 'hello,\n\nworld', 'HEREDOC trim and dedent with blank line')
-okay(HEREDOC(`
+//{ "unblock": true, "name": "test" }
+{
+    okay(HEREDOC(`
+        hello, world
+    `), 'hello, world', 'HEREDOC trim and dedent')
+    okay(HEREDOC(`
+        hello,
+        world
+    `), 'hello,\nworld', 'HEREDOC trim and dedent multiline')
+    okay(HEREDOC(`
         hello,
 
-    world
-`), '    hello,\n\nworld', 'HEREDOC trim and dedent to least indented')
+        world
+    `), 'hello,\n\nworld', 'HEREDOC trim and dedent with blank line')
+    okay(HEREDOC(`
+            hello,
+
+        world
+    `), '    hello,\n\nworld', 'HEREDOC trim and dedent to least indented')
+}
 ```
 
 This is probably better.
 
 ```javascript
-function generate (count) {
-    const loop = $(`
-        for (let i = 0; i < ${count}; i++) {
-            value += i
-        }
-    `)
+//{ "unblock": true, "name": "test" }
+(function () {
+    function generate (count) {
+        const loop = $(`
+            for (let i = 0; i < ${count}; i++) {
+                value += i
+            }
+        `)
 
-    return $(`
-        function () {
-            let value = 0
+        return $(`
+            function () {
+                let value = 0
 
-            `, loop, `
+                `, loop, `
 
-            return value
-        }
-    `)
-}
+                return value
+            }
+        `)
+    }
 
-test(generate(3), './test/anon-loop-func.txt')
+    test(generate(3), './test/anon-loop-func.txt')
+}) ()
 ```
 
 This `generate` function would emit the following code for `count = 3`.
 
+
 ```javascript
+//{ "mode": "text", "save": "./test/anon-loop-func.txt" }
 function () {
     let value = 0
 
@@ -269,7 +320,6 @@ function () {
     return value
 }
 ```
-
 <div style="text-align: right">contents of: <code>./test/anon-loop-func.txt</code></div>
 
 I've used Programmatic to create generate some rather intense JavaScript code
@@ -294,6 +344,7 @@ variable is indented by the four spaces relative to the keyword `function` in
 the string template.
 
 ```javascript
+//{ "mode": "text" }
 const $ = require('programmatic')
 
 function generate (body) {
@@ -310,6 +361,7 @@ console.log(generate, 'return 1'))
 The output program emits the following.
 
 ```text
+//{ "mode": "text" }
 function f () {
     return 1
 }
@@ -340,6 +392,7 @@ even matter really? Check to see if it doesn't and if it doesn't then we only
 have five rules.
 
 ```javascript
+//{ "mode": "text" }
 function generateFunction (name, signature, body) { console.log('--- function body ---')
     console.log(body)
     return $(`
@@ -373,6 +426,7 @@ In the above the call to `console.log(body)` should emit the following to the
 console. The variable does not include indentation.
 
 ```text
+//{ "mode": "text" }
 case 0:
     return 'off'
 case 1:
@@ -399,6 +453,7 @@ Programmatic has removed the leading spaces from the string literals in the
 JavaScript code
 
 ```javasript
+//{ "mode": "text" }
 function generate (consts, lets, body) {
     return $(`
         function () {
@@ -430,6 +485,7 @@ a string literal with a Programmatic generated block. Here we imagine that
 generate a block using Programmatic.
 
 ```javasript
+//{ "mode": "text" }
 function generate (options) {
     return $(`
         function () {
@@ -446,6 +502,7 @@ function generate (options) {
 Rule two, the very first line and very last line are always discarded.
 
 ```javasript
+//{ "mode": "text" }
 function generate () {
     const lets = $(`
         let i = 3
@@ -474,6 +531,7 @@ call to determine the dedent.
 The above will generate...
 
 ```javascript
+//{ "mode": "text" }
 function () {
     let i = 3
     let array = []
@@ -489,6 +547,7 @@ function () {
 It will not generate...
 
 ```javascript
+//{ "mode": "text" }
 function () {
 
     let i = 3
@@ -587,6 +646,7 @@ interpolation.
 Rule six, null variables will delete any subsequent blank lines.
 
 ```javasript
+//{ "mode": "text" }
 function generate (consts, lets, body) {
     return $(`
         function () {
@@ -621,6 +681,7 @@ When we call the `generate` function with a `null` value for `consts`, the
 The above will generate...
 
 ```javascript
+//{ "mode": "text" }
 function () {
     let i = 3
     let sum = 0
@@ -635,7 +696,9 @@ function () {
 
 And not...
 
+
 ```javascript
+//{ "mode": "text" }
 function () {
 
     let i = 3
@@ -652,6 +715,7 @@ function () {
 And certainly not...
 
 ```javascript
+//{ "mode": "text" }
 function () {
     null
 
